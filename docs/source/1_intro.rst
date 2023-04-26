@@ -4,14 +4,12 @@ Introduction
 
 Overview of the toolboox
 ------------------------
-The proposed toolbox includes a CPS simulator and a set of security tools. As shown in the figure below, the simulator mimics the behavior of a CPS: Sensors measure system states and forward measurements to observers. Meanwhile, the measurements could suffer from external uncertainties and attacks to meet experiment needs. On the basis of them, the observers are responsible for providing state estimates for the controllers. Then, the controllers generate control input to be implemented in physical plants. Plant simulators update system states according to system dynamics and control input. To secure CPS, various attack detectors and real-time attack recovery controllers are included to respond to those attacks.
+The proposed toolbox includes a CPS simulator and a set of security tools. As shown in the figure |Design Overview|, the simulator mimics the behavior of a CPS: Sensors measure system states and forward measurements to observers. Meanwhile, the measurements could suffer from external uncertainties and attacks to meet experiment needs. On the basis of them, the observers are responsible for providing state estimates for the controllers. Then, the controllers generate control input to be implemented in physical plants. Plant simulators update system states according to system dynamics and control input. To secure CPS, various attack detectors and real-time attack recovery controllers are included to respond to those attacks.
 
-.. |Design Overview of Simulation and Security Toolbox| image:: images/1_intro/framework.png
-   :width: 100%
+.. |Design Overview| image:: ./images/1_intro/framework.png
+   :width: 70%
    :align: center
    :alt: Design Overview of Simulation and Security Toolbox
-   :target: images/1_intro/framework.png
-
 
 Components of the toolbox
 -------------------------
