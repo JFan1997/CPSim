@@ -1,4 +1,4 @@
-Welcome to Lumache's documentation!
+Welcome to CPSim's documentation!
 ===================================
 
 **Lumache** (/lu'make/) is a Python library for cooks and food lovers
@@ -13,10 +13,11 @@ how to :ref:`installation` the project.
 
    This project is under active development.
 
-Contents
+Documentation
 --------
 
 .. toctree::
+   :maxdepth: 2
 
-   usage
-   api
+   1_intro
+   2_basic
