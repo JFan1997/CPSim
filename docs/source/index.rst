@@ -1,23 +1,31 @@
 Welcome to CPSim's documentation!
 ===================================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
+Simulation and Security Toolbox for Cyber-Physical Systems
 
-Check out the :doc:`usage` section for further information, including
-how to :ref:`installation` the project.
+If you use CPSim in your work, please use one of the following references:
+.. code::
+
+    @inproceedings{zhang2023cpsim,
+      title={Demo: Simulation and Security Toolbox for Cyber-Physical Systems},
+      author={Zhang, Lin and Liu, Mengyu and Kong, Fanxin},
+      booktitle={2023 IEEE 29th Real-Time and Embedded Technology and Applications Symposium (RTAS) Brief Presentations},
+      pages={},
+      year={2023},
+      organization={IEEE}
+    }
+
 
 .. note::
 
    This project is under active development.
 
 Documentation
---------
+-------------
 
 .. toctree::
    :maxdepth: 2
 
    1_intro
-   2_basic
+   2_install
+   3_basic
