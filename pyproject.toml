@@ -3,21 +3,36 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "CPSim"
+name = "cpsim"
 version = "0.0.1"
 authors = [
   { name="Lin Zhang", email="lzhan120@syr.edu" },
 ]
-maintainers = []
+maintainers = [
+  { name="Mengyu Liu", email="mliu71@syr.edu" },
+]
 description = "Simulation and Security Toolbox for Cyber-Physical Systems"
 readme = "README.md"
 requires-python = ">=3.7"
+license = {file = "LICENSE"}
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+keywords = ["cyber-physical system", "control", "simulation", "security", "CPS"]
+dependencies = [
+    "scipy>=1.9",
+    "numpy",
+    "cvxpy",
+    "matplotlib",
+]
+
+[project.optional-dependencies]
+interval = ["pyinterval"]
 
 [project.urls]
-"Homepage" = "https://sim.cpsec.org/en/latest/"
+homepage = "https://sim.cpsec.org/en/latest/"
+documentation = "https://sim.cpsec.org/en/latest/"
+repository = "https://github.com/lion-zhang/CPSim/"
 "Bug Tracker" = "https://github.com/lion-zhang/CPSim/issues"
