@@ -30,6 +30,7 @@ dependencies = [
 
 [project.optional-dependencies]
 interval = ["pyinterval"]
+doc = ["sphinx", "sphinx_rtd_theme"]
 
 [project.urls]
 homepage = "https://sim.cpsec.org/en/latest/"
