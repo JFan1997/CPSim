@@ -2,6 +2,10 @@
 
 # -- Project information
 
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../../src/'))
+
 project = 'CPSim'
 copyright = '2023, CPSim Developers'
 author = 'CPSim Developers'
@@ -33,3 +37,6 @@ html_theme = 'sphinx_rtd_theme'
 
 # -- Options for EPUB output
 epub_show_urls = 'footnote'
+
+# highlight code
+pygments_style = 'sphinx'

@@ -36,6 +36,8 @@ Documentation
    1_intro
    2_install
    3_basic
+   4_advanced
+   9_api
 
 
 
