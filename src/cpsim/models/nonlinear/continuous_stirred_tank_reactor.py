@@ -1,5 +1,4 @@
 import numpy as np
-from interval import imath
 from numpy import exp
 
 from cpsim import Simulator
@@ -41,6 +40,7 @@ def cstr(t, x, u, Tf=350, Caf=1, use_imath=False):
 
     # reaction rate
     if use_imath:
+        from interval import imath
         rA = k0 * imath.exp(-EoverR / T) * Ca
     else:
         rA = k0 * np.exp(-EoverR / T) * Ca

@@ -1,0 +1,10 @@
+sphinx
+sphinx-rtd-theme
+urllib3
+
+scipy>=1.9
+numpy
+cvxpy
+matplotlib
+pyinterval
+sympy

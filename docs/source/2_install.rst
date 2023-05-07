@@ -26,6 +26,10 @@ This will install pyinterval dependency, but only works on Linux.
 Minimum Simulation
 ------------------
 
+.. literalinclude:: ../../src/examples/1_CSTR_simulation.py
+    :language: python
+    :linenos:
+
 
 Basic Concepts
 --------------
