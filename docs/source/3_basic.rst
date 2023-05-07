@@ -3,12 +3,14 @@ Built-in Components
 
 
 
-System Models
--------------------
-Linear System
-~~~~~~~~~~~~~
+Linear System Models
+--------------------
+.. include:: ./3_basic/linear_model.rst
 
 
+Nonlinear System Models
+-----------------------
+.. include:: ./3_basic/nonlinear_model.rst
 
 
 Controllers

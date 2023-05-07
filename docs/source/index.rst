@@ -4,6 +4,7 @@ Welcome to CPSim's documentation!
 Simulation and Security Toolbox for Cyber-Physical Systems
 
 If you use CPSim in your work, please use one of the following references:
+
 .. code::
 
     @inproceedings{zhang2023cpsim,
@@ -20,6 +21,12 @@ If you use CPSim in your work, please use one of the following references:
 
    This project is under active development.
 
+
+Collaborators
+-------------
+* Lin Zhang
+
+
 Documentation
 -------------
 
@@ -29,3 +36,6 @@ Documentation
    1_intro
    2_install
    3_basic
+
+
+

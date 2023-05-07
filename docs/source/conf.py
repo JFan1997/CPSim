@@ -3,7 +3,7 @@
 # -- Project information
 
 project = 'CPSim'
-copyright = '2023, Lin Zhang'
+copyright = '2023, CPSim Developers'
 author = 'CPSim Developers'
 
 release = '0.1'
