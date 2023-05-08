@@ -3,6 +3,10 @@ Welcome to CPSim's documentation!
 
 Simulation and Security Toolbox for Cyber-Physical Systems
 
+Github Repository: https://github.com/lion-zhang/CPSim
+
+Documentation: https://sim.cpsec.org/
+
 If you use CPSim in your work, please cite one of the following references:
 
 .. code::
@@ -25,6 +29,9 @@ If you use CPSim in your work, please cite one of the following references:
 Collaborators
 -------------
 * Lin Zhang
+* Mengyu Liu (Thank you for helping with Documentation.)
+* Fanxin Kong (Advisor)
+
 
 
 Documentation
