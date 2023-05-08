@@ -80,4 +80,4 @@ Finally, we show the demonstration video here.
 
 .. raw:: html
 
-    <p align="center"><iframe width="700" height="350" src="https://www.youtube.com/embed/OW5P37aairs" title="NO LQR TESTBED COVER" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></p>
+    <p align="center"><iframe width="700" height="350" src="https://www.youtube.com/embed/OW5P37aairs" title="Demonstration on testbed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></p>

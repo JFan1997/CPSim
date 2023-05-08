@@ -1,5 +1,5 @@
-src
-===
+cpsim
+=====
 
 .. toctree::
    :maxdepth: 4

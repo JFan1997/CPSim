@@ -3,7 +3,7 @@ Welcome to CPSim's documentation!
 
 Simulation and Security Toolbox for Cyber-Physical Systems
 
-If you use CPSim in your work, please use one of the following references:
+If you use CPSim in your work, please cite one of the following references:
 
 .. code::
 

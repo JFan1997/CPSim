@@ -89,7 +89,7 @@ Thus, after simulation is done, you can access the data through the simulation o
 In :ref:`1_CSTR_simulation.py`, we show how to access these data at Lines 20-24.
 
 
-.. note::
+.. Important::
 
    In NumPy, the ``@`` operator means matrix multiplication (Python>=3.5).
    We assume :math:`b` is a 1-D numpy array, and :math:`B` is a 2-D numpy array.

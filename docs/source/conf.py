@@ -22,6 +22,8 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.viewcode',
 ]
 
 intersphinx_mapping = {
