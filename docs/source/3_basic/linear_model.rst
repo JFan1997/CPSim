@@ -52,7 +52,7 @@ State-space model:
     \end{gathered}
 
 
-where :math:`\theta` is the angular position of the motor shaft, :math:`i` is the current through the motor, :math:`V` is the voltage applied to the motor, :math:`J=0.01 kg.m^2` is the moment of inertia of the motor, :math:`b=0.1 N.m.s` is the motor viscous friction constant, :math:`K=0.01 N.m/Amp` is the motor torque constant, and :math:`R=1 Ohm and :math:`L0.5 H` are the electrical resistance and inductance of the motor, respectively.
+where :math:`\theta` is the angular position of the motor shaft, :math:`i` is the current through the motor, :math:`V` is the voltage applied to the motor, :math:`J=0.01 kg.m^2` is the moment of inertia of the motor, :math:`b=0.1 N.m.s` is the motor viscous friction constant, :math:`K=0.01 N.m/Amp` is the motor torque constant, and :math:`R=1 Ohm` and :math:`L0.5 H` are the electrical resistance and inductance of the motor, respectively.
 
 
 .. _RLC Circuit:
