@@ -7,7 +7,7 @@
 +------------------------------------------+------------+--------------------+-------------+
 | `Aircraft Pitch`_                        |      3     |           1        |       1     |
 +------------------------------------------+------------+--------------------+-------------+
-| `RLC Circuit`_                           |      2     |           1        |       1     |
+| `Quadrotor`_                             |      12    |           4        |       1     |
 +------------------------------------------+------------+--------------------+-------------+
 | `RLC Circuit`_                           |      2     |           1        |       1     |
 +------------------------------------------+------------+--------------------+-------------+
@@ -55,7 +55,7 @@ State-space model:
 where :math:`\theta` is the angular position of the motor shaft, :math:`i` is the current through the motor, :math:`V` is the voltage applied to the motor, :math:`J=0.01 kg.m^2` is the moment of inertia of the motor, :math:`b=0.1 N.m.s` is the motor viscous friction constant, :math:`K=0.01 N.m/Amp` is the motor torque constant, and :math:`R=1 Ohm and :math:`L0.5 H` are the electrical resistance and inductance of the motor, respectively.
 
 
-.. _RLC Model:
+.. _RLC Circuit:
 
 2. RLC Circuit [2]_
 ~~~~~~~~~~~~~~~~~~~~
@@ -83,10 +83,10 @@ State-space model:
    \end{array}\right] u
    \end{gathered}
 
-.. _Pitch Model:
+.. _Aircraft Pitch:
 
 3. Aircraft Pitch [2]_
-~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 The system ODE describes the longitudinal dynamics of motion for the aircraft. The :math:`x_1` denotes the angle of attack,
 :math:`x_2` denotes the pitch rate, and :math:`x_3` denotes the pitch angle. The control input :math:`u` is the elevator deflection angle.
 
@@ -112,7 +112,19 @@ State-space model:
    0
    \end{array}\right] u
    \end{gathered}
+
+
+.. _Quadrotor:
+
+4. Quadrotor [3]_
+~~~~~~~~~~~~~~~~~
+We consider a linear quadrotor model described in [3]_. The system consists of 12 state variables: :math:`(x, y, z)`
+denotes the (relative) position, :math:`(φ, θ, ψ)` denotes the angles of pitch, yaw and roll respectively, :math:`(u, v, w)` and :math:`(p, q, r)` are the velocity and angular velocity of the quadrotor. The controller
+produces 4 inputs which are ft: total thrust, and :math:`[τ_x, τ_y, τ_z]` control torques caused by differences of rotor speeds.
+
+
 References:
 
 .. [1] `Control Tutorials for MATLAB and Simulink - Motor Speed: System Modeling. (n.d.). <https://ctms.engin.umich.edu/CTMS/index.php?example=MotorSpeed§ion=SystemModeling>`_
-.. [2] Reference 2
+.. [2] `Reference 2`_
+.. [3] `Quadrotor control:modeling,nonlinear controldesign,and simulation. <https://www.kth.se/polopoly_fs/1.588039.1600688317!/Thesis%20KTH%20-%20Francesco%20Sabatino.pdf>`_
