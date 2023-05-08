@@ -63,6 +63,11 @@ A basic RLC circuit contains a resistor, an inductor, and a capacitor connected 
 denotes the voltage across the capacitor and state :math:`x_2` denotes the electric current in the loop. The
 control input :math:`u` is considered the voltage of the voltage source.
 
+.. image:: images/3_basic/rlc.png
+   :width: 100 px
+   :align: center
+   :alt: RLC
+
 State-space model:
 
 .. math::
@@ -89,6 +94,11 @@ State-space model:
 ~~~~~~~~~~~~~~~~~~~~~~
 The system ODE describes the longitudinal dynamics of motion for the aircraft. The :math:`x_1` denotes the angle of attack,
 :math:`x_2` denotes the pitch rate, and :math:`x_3` denotes the pitch angle. The control input :math:`u` is the elevator deflection angle.
+
+.. image:: images/3_basic/aircraftpitch.png
+   :width: 300 px
+   :align: center
+   :alt: Aircraft Pitch
 
 State-space model:
 
@@ -122,6 +132,10 @@ We consider a linear quadrotor model described in [3]_. The system consists of 1
 denotes the (relative) position, :math:`(φ, θ, ψ)` denotes the angles of pitch, yaw and roll respectively, :math:`(u, v, w)` and :math:`(p, q, r)` are the velocity and angular velocity of the quadrotor. The controller
 produces 4 inputs which are ft: total thrust, and :math:`[τ_x, τ_y, τ_z]` control torques caused by differences of rotor speeds.
 
+.. image:: images/3_basic/quadrotor.png
+   :width: 300 px
+   :align: center
+   :alt: DC motor
 
 References:
 
