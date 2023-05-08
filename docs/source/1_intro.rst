@@ -3,8 +3,22 @@ Introduction
 
 Cyber-Physical Systems (CPS)
 ----------------------------
+Cyber-physical systems (CPSs) seamlessly integrate computational resources and physical components with sensing and actuation. The integration expands the capability of these critical components and services in numerous domains, such as healthcare, aviation, transportation, and manufacturing. Despite the benefits, attacks targeted at CPSs can effortlessly cause severe consequences that damage economic interests, endanger personal safety, and disrupt social order.
+
+.. image:: images/1_intro/cps.png
+   :width: 400 px
+   :align: center
+   :alt: Cyber-Physical Systems in Real World
 
 
+Urgent needs to secure CPSs motivated many defense mechanisms. Attack detectors aim at identifying attacks at the earliest time, and attack recovery methods try to eliminate the impact caused by these attacks and even steer the system's physical states to a target set.
+However, there are few solutions that help to evaluate the efficacy and efficiency of these security countermeasurements due to the following challenges:
+(i) tremendous efforts are required to collect benchmark plants, design controllers, customize attacks, build defense approaches, and evaluate these approaches.
+(ii) the existing solutions are difficult to add new features or integrate with existing simulators.
+(iii) besides cyber states, the physical behavior of systems also requires to be simulated.
+
+To address these challenges, we develop a simulation and security toolbox with high extendibility and flexibility. One can easily switch between different experiment settings and apply defense prototypes responding to different attacks.
+The source code is available at our `GitHub repository <https://github.com/lion-zhang/CPSim>`_.
 
 Overview of the toolboox
 ------------------------
@@ -14,6 +28,7 @@ The proposed toolbox includes a CPS simulator and a set of security tools. As sh
    :width: 400 px
    :align: center
    :alt: Design Overview of Simulation and Security Toolbox
+
 
 Components of the toolbox
 -------------------------
