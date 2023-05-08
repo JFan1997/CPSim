@@ -19,5 +19,15 @@ Controllers
 
 Formal Methods
 --------------------
+.. include:: ./3_basic/formal.rst
 
+
+Noise / Disturbance
+--------------------
+.. include:: ./3_basic/noise.rst
+
+
+Attack Simulator
+--------------------
+.. include:: ./3_basic/attack.rst
 

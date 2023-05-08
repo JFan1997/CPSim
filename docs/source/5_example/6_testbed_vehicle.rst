@@ -25,7 +25,7 @@ Autonomous vehicles sense states and environments, make decisions, and control m
 
 
 To demonstrate the toolbox usage, we show a real-time attack recovery on SVL high-fidelity simulator.
-We implement the LQR-based attack recovery method on the robotic vehicle testbed, and the design is illustrated in this figure:
+We implement the LQR-based attack recovery method [2]_ on the robotic vehicle testbed, and the design is illustrated in this figure:
 
 .. image:: images/5_example/testbed_recovery_arch.png
    :width: 550 px
