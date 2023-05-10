@@ -20,4 +20,4 @@ Finally, we show the demonstration video here.
 
 .. raw:: html
 
-    <p align="center"><iframe width="700" height="350" src="https://www.youtube.com/embed/OBKl84xG1r4" title="Demonstration on SVL Simulator" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></p>
+    <p align="center"><iframe width="700" height="350" src="https://www.youtube.com/embed/OBKl84xG1r4?rel=0" title="Demonstration on SVL Simulator" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></p>
