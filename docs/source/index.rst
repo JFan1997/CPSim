@@ -26,7 +26,7 @@ If you use CPSim in your work, please cite one of the following references:
    This project is under active development.
 
 
-Collaborators
+Contributor
 -------------
 * Lin Zhang
 * Mengyu Liu
