@@ -29,7 +29,7 @@ If you use CPSim in your work, please cite one of the following references:
 Collaborators
 -------------
 * Lin Zhang
-* Mengyu Liu (Thank you for helping with Documentation.)
+* Mengyu Liu
 * Fanxin Kong (Advisor)
 
 
