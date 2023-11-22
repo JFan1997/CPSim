@@ -126,7 +126,7 @@ State-space model:
 4. Quadrotor [3]_
 ~~~~~~~~~~~~~~~~~
 We consider a linear quadrotor model described in [3]_. The system consists of 12 state variables: :math:`(x, y, z)`
-denotes the (relative) position, :math:`(φ, θ, ψ)` denotes the angles of pitch, yaw and roll respectively, :math:`(u, v, w)` and :math:`(p, q, r)` are the velocity and angular velocity of the quadrotor. The controller
+denotes the (relative) position, :math:`(𝜙, θ, ψ)` denotes the angles of roll, pitch and yaw respectively, :math:`(u, v, w)` and :math:`(p, q, r)` are the velocity and angular velocity of the quadrotor. The controller
 produces 4 inputs which are ft: total thrust, and :math:`[τ_x, τ_y, τ_z]` control torques caused by differences of rotor speeds.
 
 .. image:: images/3_basic/quadrotor.png
