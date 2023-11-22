@@ -37,7 +37,7 @@ References:
 ~~~~~~~~~~~
 The dynamics of the inverted pendulum on a cart is described by a nonlinear model. The objective is to stabilize the inverted pendulum towards the upright position by applying force to the cart.
 The cart position is denoted by x, velocity by v, pendulum angle by θ, angular velocity by ω, pendulum mass by m, cart mass by M, pendulum arm by L, gravitational acceleration by g, friction damping on the cart by δ, and control force applied to the cart by u.
-
+/
 .. math::
  \begin{gathered}
     \begin{array}{ll}
