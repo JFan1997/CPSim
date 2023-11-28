@@ -20,7 +20,25 @@ The following figure plots the ground truth temperature from the simulator. From
    :align: center
    :alt: Attack Recovery Performance for Baselines
 
+.. image:: images/5_example/performance.png
+   :width: 650 px
+   :align: center
+   :alt: Attack Recovery Performance for Baselines
 
+.. image:: images/5_example/sensitivity_bias_CSTR.png
+   :width: 650 px
+   :align: center
+   :alt: Sensitivity analysis on CSTR benchmark
+
+.. image:: images/5_example/sensitivity_noise_CSTR.png
+   :width: 650 px
+   :align: center
+   :alt: Sensitivity analysis to noise on CSTR benchmark
+
+.. image:: images/5_example/sensitivity_noise_Quadrotor.png
+   :width: 650 px
+   :align: center
+   :alt: Sensitivity analysis to noise on CSTR benchmark
 Reference:
 
 .. [1] `F. Kong, M. Xu, J. Weimer, O. Sokolsky, and I. Lee, "Cyber-physical system checkpointing and recovery," in 2018 ACM/IEEE 9th International Conference on Cyber-Physical Systems (ICCPS), IEEE, 2018, pp. 22-31.`

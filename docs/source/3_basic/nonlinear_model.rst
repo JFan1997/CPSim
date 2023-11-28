@@ -37,15 +37,15 @@ References:
 ~~~~~~~~~~~
 The dynamics of the inverted pendulum on a cart is described by a nonlinear model. The objective is to stabilize the inverted pendulum towards the upright position by applying force to the cart.
 The cart position is denoted by x, velocity by v, pendulum angle by θ, angular velocity by ω, pendulum mass by m, cart mass by M, pendulum arm by L, gravitational acceleration by g, friction damping on the cart by δ, and control force applied to the cart by u.
-/
+
 .. math::
- \begin{gathered}
-    \begin{array}{ll}
-\dot{x}=v, \\
-\dot{v}=\frac{-m^2 L^2 g \cos (\theta) \sin (\theta)+m L^2\left(m L \omega^2 \sin (\theta)-\delta v\right)+m L^2 u}{m L^2\left(M+m\left(1-\cos (\theta)^2\right)\right)} \\
-\dot{\theta}=\omega  \\
-\dot{\omega}=\frac{(m+M) m g L \sin (\theta)-m L \cos (\theta)\left(m L \omega^2 \sin (\theta)-\delta v\right)-m L \cos (\theta) u}{m L^2\left(M+m\left(1-\cos (\theta)^2\right)\right)}
-\end{array}
+    \begin{gathered}
+     \begin{array}{ll}
+     \dot{x}=v, \\
+     \dot{v}=\frac{-m^2 L^2 g \cos (\theta) \sin (\theta)+m L^2\left(m L \omega^2 \sin (\theta)-\delta v\right)+m L^2 u}{m L^2\left(M+m\left(1-\cos (\theta)^2\right)\right)} \\
+     \dot{\theta}=\omega  \\
+     \dot{\omega}=\frac{(m+M) m g L \sin (\theta)-m L \cos (\theta)\left(m L \omega^2 \sin (\theta)-\delta v\right)-m L \cos (\theta) u}{m L^2\left(M+m\left(1-\cos (\theta)^2\right)\right)}
+     \end{array}
    \end{gathered}
 
 .. image:: images/3_basic/pendulum.png
