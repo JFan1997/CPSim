@@ -30,6 +30,8 @@ Contributor
 -------------
 * Lin Zhang
 * Mengyu Liu
+* Weizhe Xu
+* Shixiong Jiang
 * Fanxin Kong (Advisor)
 
 

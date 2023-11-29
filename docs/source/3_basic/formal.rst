@@ -20,11 +20,21 @@ If :math:`\bar{\mathcal{R}} \cap \mathcal{F}=\emptyset`, then we can guarantee t
 
 Reachability Analysis for Linear Systems
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+By utilizing the Taylor model-based reachability computation on a
+past state, we can obtain an overapproximate
+estimation of the state at a subsequent time. We begin by taking the
+most recent reliable state, :math:`x_w`, as the starting point.
+Next, we analyze the historical control sequence utilized from the time :math:`t_w` to :math:`t_f` and
+calculate an interval set (or box), :math:`X`. This set is guaranteed to contain the system state at :math:`t_f`.
 
 
 State Estimate Reconstruction
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+At time :math:`t_f` , the system state estimates
+cannot reflect the actual system states because of sensor
+attacks.  Therefore, the predictor must rebuild the current state
+reachable set :math:`X_f` from a reliable :math:`x_w` state, as provided
+by the checkpointer.
 .. image:: images/3_basic/start_set_estimation.png
    :width: 500 px
    :align: center
@@ -33,7 +43,7 @@ State Estimate Reconstruction
 
 Deadline Estimation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+We conduct reachability analysis to determine a deadline, :math:`t_d`, at which point the system may touch the unsafe set.
 .. image:: images/3_basic/deadline_estimation.png
    :width: 500 px
    :align: center
