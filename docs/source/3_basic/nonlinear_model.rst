@@ -15,9 +15,7 @@ The nonlinear dynamics of the quadrotor relate its attitude and position with 12
     \end{array}
    \end{gathered}
 
-   :width: 300 px
-   :align: center
-   :alt: quadrotor
+
 
 2. Vessel
 ~~~~~~~~~
@@ -52,4 +50,26 @@ The cart position is denoted by x, velocity by v, pendulum angle by θ, angular 
    :width: 300 px
    :align: center
    :alt: pendulum
+
+4. CSTR
+~~~~~~~~~~~
+In the dynamics of a CSTR, the exothermic
+reaction of species A → B is analyzed using the concentration
+of A (:math:`C_A`) and the reactor temperature (:math:`T`) as states. The
+control input is determined by the temperature of the cooling jacket
+(:math:`T_C`). The precise dynamics, considering different system parameters are outlined below.
+.. math::
+    \begin{gathered}
+     \begin{array}{ll}
+     V\dot{C}_A & =q\left(C_{a f}-C_A\right)-k_0 \exp \left(\frac{-E}{R T}\right) V C_A \\
+     \rho C_p V \dot{T} & =\rho C_p q\left(T_f-T\right)+\Delta H k_0 \exp \left(\frac{-E}{R T}\right) V C_A \\
+     & +U A\left(T_C-T\right)
+     \end{array}
+    \end{gathered}
+
+.. image:: images/5_example/cstr.png
+   :width: 400 px
+   :align: center
+   :alt: CSTR
+.. [1] `A nonlinear model library for dynamics and control. <https://d1wqtxts1xzle7.cloudfront.net/36872378/nonlinearmodellibrary-libre.pdf?1425595138=&response-content-disposition=inline%3B+filename%3DA_Nonlinear_Model_Library_for_Dynamics_a.pdf&Expires=1701210799&Signature=HIVd2ORsI4t3TogTf0ihSfQ~eHxnSZC2zxiAqqiJU5-t8E1AcS-D7IP2qnTSg9uONV~fBWmwhVwr5YHq3PrzZTchEMWIllVNI3fcMeTMRFU~x-2~yq5q1-TqxQmb0D-sGmVZefapQzDRLWsePOUWFK3rz9kcBljqboInK3Z0qFHiCFK2QPtTyL8hY1aMnkaNuQZkn2lbdQ7wb0vt9lA24~GqBq6yQ9-RbpkRx~Bmd9JDAvRTsb4x1zNEyTx4LwuBDtSgF16cn1hFq1rApw3OhPJOFFQOvvez7LkGqizBBowWsUFxlVMviiTan1a4K0vh1vNrckgPe~kheLB9j7ZhHQ__&Key-Pair-Id=APKAJLOHF5GGSLRBV4ZA>`_
 
