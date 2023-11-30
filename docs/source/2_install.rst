@@ -98,15 +98,27 @@ In :ref:`1_CSTR_simulation.py`, we show how to access these data at Lines 20-24.
 
 FAQ
 ~~~~~~~~~~~~~~~
-Can't run the commands successfully?
+1. TypeError: 'max_iters' is an invalid keyword argument for this function
 
-Please read requiements.txt, and make sure all the packages have the correct version installed.
+Line 149 in src/cpsim/controllers/LP_cvxpy.py
+"max_iter" to "max_iters" or "max_iters" to "max_iter"
 
-Meet an error from plot?
+
+
+2. NameError: name 'imath' is not defined
+
+go to "anaconda3/envs/demo3/lib/python3.8/site-packages/cpsim/models/nonlinear/vessel.py" in your anaconda's path
+add "from interval import imath, interval" in line 8.
+
+
+
+3. Meet an error from plot?
 
 Try to enlarge the max_index in settings.py.
 
-Solver failed?
 
-Sorry, somtimes our method can't solve the problem. Please change the settings.
+
+4. Solver failed?
+
+Sorry, somtimes our methods can't solve the problem. Please change the settings.
 
