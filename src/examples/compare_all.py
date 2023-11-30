@@ -36,8 +36,8 @@ elif args.sim == 'quad_bias':
 elif args.sim == 'vessel_bias':
     exps = [vessel_bias]
 
-# baselines = ['none', 'lp', 'lqr', 'ssr', 'mpc'] # For LP, use cp.ECOS solver for cstr but cp.OSQP solver for quadrotor
-baselines = ['none', 'lqr', 'ssr', 'mpc'] # For LP, use cp.ECOS solver for cstr but cp.OSQP solver for quadrotor
+baselines = ['none', 'lp', 'lqr', 'ssr', 'mpc'] # For LP, use cp.ECOS solver for cstr but cp.OSQP solver for quadrotor
+# baselines = ['none', 'lqr', 'ssr', 'mpc'] # For LP, use cp.ECOS solver for cstr but cp.OSQP solver for quadrotor
 if 'mpc' not in baselines:
     deadline_for_all_methods = 100
 colors = {'none': 'red', 'lp': 'cyan', 'lqr': 'green', 'ssr': 'orange', 'mpc': 'blue'}
@@ -306,8 +306,8 @@ for exp in exps:
                 # get recovery control sequence
                 Q_lqr = np.diag([1]*exp.nx)
                 QN_lqr = np.diag([1]*exp.nx)
-                # R_lqr = np.diag([1])
-                R_lqr = np.diag([1]*exp.nu)
+                R_lqr = np.diag([1])
+                # R_lqr = np.diag([1]*exp.nu)
                 lqr_settings = {
                     'Ad': A, 'Bd': B, 'c_nonlinear': c,
                     'Q': Q_lqr, 'QN': QN_lqr, 'R': R_lqr,
