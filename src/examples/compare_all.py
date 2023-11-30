@@ -48,7 +48,7 @@ overhead_dict = {}
 logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
-        logging.FileHandler("debug/debug.log"),
+        logging.FileHandler("debug.log"),
         logging.StreamHandler(sys.stdout)
     ]
 )
