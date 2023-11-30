@@ -96,7 +96,7 @@ In :ref:`1_CSTR_simulation.py`, we show how to access these data at Lines 20-24.
    Then, :math:`b` is a row vector in ``b@B``, and :math:`b` is a column vector in ``B@b``.
    Thus, 1-D numpy array can be used to represent both row and column vectors in matrix multiplication.
 
-FAQ
+Q&A
 ~~~~~~~~~~~~~~~
 1. TypeError: 'max_iters' is an invalid keyword argument for this function
 
