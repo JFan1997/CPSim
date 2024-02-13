@@ -12,7 +12,7 @@ This alarm triggers the recovery strategies.
 We compare the performance of our solution, called the open loop OPR (OPR-OL), with the LQR-based recovery [2]_, and virtual sensors.
 We then obtain the next Figure:
 
-.. image:: images/4_fast_recovery/timeseries_motor_speed_3_strats.png
+.. image:: images/4_fast_recovery/timeseries_motor_speed_3_strats.jpg
    :width: 650 px
    :align: center
    :alt: Attack Recovery Performance for Baselines for the motor system
@@ -21,7 +21,7 @@ We also include the simulations to improve our solution by incorporating the non
 We call this strategy the partially closed loop OPR (OPR-PCL).
 We compare the OPR-OL and OPR-PCL:
 
-.. image:: images/4_fast_recovery/timeseries_motor_speed_opr.png
+.. image:: images/4_fast_recovery/timeseries_motor_speed_opr.jpg
    :width: 650 px
    :align: center
    :alt: Attack Recovery Performance for Baselines for the motor system
