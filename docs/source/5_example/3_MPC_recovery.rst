@@ -44,7 +44,7 @@ We also provide the sensitivity analysis by the noise with varying upper bound o
 
 We provide the source code of above figures.
 
-.. literalinclude:: ../../../src/examples/CSTR_bias.py
+.. literalinclude:: ../../src/examples/CSTR_bias.py
     :language: python
     :linenos:
     :caption: Bias attack on the CSTR benchmark
