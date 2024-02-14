@@ -35,6 +35,7 @@ cannot reflect the actual system states because of sensor
 attacks.  Therefore, the predictor must rebuild the current state
 reachable set :math:`X_f` from a reliable :math:`x_w` state, as provided
 by the checkpointer.
+
 .. image:: images/3_basic/start_set_estimation.png
    :width: 500 px
    :align: center
@@ -44,6 +45,7 @@ by the checkpointer.
 Deadline Estimation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 We conduct reachability analysis to determine a deadline, :math:`t_d`, at which point the system may touch the unsafe set.
+
 .. image:: images/3_basic/deadline_estimation.png
    :width: 500 px
    :align: center

@@ -137,5 +137,5 @@ produces 4 inputs which are ft: total thrust, and :math:`[τ_x, τ_y, τ_z]` con
 References:
 
 .. [1] `Control Tutorials for MATLAB and Simulink - Motor Speed: System Modeling. (n.d.). <https://ctms.engin.umich.edu/CTMS/index.php?example=MotorSpeed§ion=SystemModeling>`_
-.. [2] `Reference 2`_
+.. [2] `Aircraft Pitch: PID Controller Design. <https://ctms.engin.umich.edu/CTMS/index.php?example=AircraftPitch&section=ControlPID>`_
 .. [3] `Quadrotor control:modeling,nonlinear controldesign,and simulation. <https://www.kth.se/polopoly_fs/1.588039.1600688317!/Thesis%20KTH%20-%20Francesco%20Sabatino.pdf>`_
