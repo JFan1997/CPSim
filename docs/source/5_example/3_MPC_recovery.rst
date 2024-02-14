@@ -24,6 +24,7 @@ The following figure plots the results from the simulator. From the curve, we ca
    :alt: Attack Recovery Performance for Baselines
 
 We conduct a sensitivity analysis by varying bias values and noise on the CSTR benchmark. The findings are displayed in the two figures below.
+
 .. image:: images/5_example/sensitivity_bias_CSTR.png
    :width: 650 px
    :align: center
@@ -35,12 +36,14 @@ We conduct a sensitivity analysis by varying bias values and noise on the CSTR b
    :alt: Sensitivity analysis to noise on CSTR benchmark
 
 We also provide the sensitivity analysis by the noise with varying upper bound on the quadrotor benchmark.
+
 .. image:: images/5_example/sensitivity_noise_Quadrotor.png
    :width: 650 px
    :align: center
    :alt: Sensitivity analysis to noise on CSTR benchmark
 
 We provide the source code of above figures.
+
 .. literalinclude:: ../../../src/examples/CSTR_bias.py
     :language: python
     :name: CSTR_bias.py
