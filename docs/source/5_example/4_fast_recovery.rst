@@ -28,14 +28,14 @@ We compare the OPR-OL and OPR-PCL:
 
 We provide the code to obtain previous figures.
 
-.. literalinclude:: ../../../src/examples/rtas/motor_example.py
+.. literalinclude:: ../../src/examples/rtas/motor_example.py
     :language: python
     :linenos:
     :caption: Bias attack on the CSTR benchmark
 
 An user can change the attack characteristics (e.g., detection delay).
 
-.. literalinclude:: ../../../src/examples/rtas/settings.py
+.. literalinclude:: ../../src/examples/rtas/settings.py
     :language: python
     :linenos:
     :caption: Bias attack on the CSTR benchmark
