@@ -26,9 +26,19 @@ We compare the OPR-OL and OPR-PCL:
    :align: center
    :alt: Attack Recovery Performance for Baselines for the motor system
 
-We provide the code to obtain previous figures in the file ../../../src/examples/rtas/motor_example.py
+We provide the code to obtain previous figures.
 
-An user can change the attack characteristics (e.g., detection delay) in the file ../../../src/examples/rtas/settings.py
+.. literalinclude:: ../../../src/examples/rtas/motor_example.py
+    :language: python
+    :linenos:
+    :caption: Bias attack on the CSTR benchmark
+
+An user can change the attack characteristics (e.g., detection delay).
+
+.. literalinclude:: ../../../src/examples/rtas/settings.py
+    :language: python
+    :linenos:
+    :caption: Bias attack on the CSTR benchmark
 
 Reference:
 

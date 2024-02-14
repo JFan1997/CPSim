@@ -46,9 +46,9 @@ We provide the source code of above figures.
 
 .. literalinclude:: ../../../src/examples/CSTR_bias.py
     :language: python
-    :name: CSTR_bias.py
-    :caption: Bias attack on the CSTR benchmark
     :linenos:
+    :caption: Bias attack on the CSTR benchmark
+
 Reference:
 
 .. [1] `F. Kong, M. Xu, J. Weimer, O. Sokolsky, and I. Lee, "Cyber-physical system checkpointing and recovery," in 2018 ACM/IEEE 9th International Conference on Cyber-Physical Systems (ICCPS), IEEE, 2018, pp. 22-31.`
