@@ -58,6 +58,7 @@ reaction of species A → B is analyzed using the concentration
 of A (:math:`C_A`) and the reactor temperature (:math:`T`) as states. The
 control input is determined by the temperature of the cooling jacket
 (:math:`T_C`). The precise dynamics, considering different system parameters are outlined below.
+
 .. math::
     \begin{gathered}
      \begin{array}{ll}
