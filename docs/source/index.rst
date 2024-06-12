@@ -12,12 +12,12 @@ If you use CPSim in your work, please cite one of the following references:
 .. code::
 
     @inproceedings{zhang2023cpsim,
-      title={Demo: Simulation and Security Toolbox for Cyber-Physical Systems},
-      author={Zhang, Lin and Liu, Mengyu and Kong, Fanxin},
-      booktitle={2023 IEEE 29th Real-Time and Embedded Technology and Applications Symposium (RTAS) Brief Presentations},
-      pages={},
-      year={2023},
-      organization={IEEE}
+      title={CPSim: Simulation Toolbox for Security Problems in Cyber-Physical Systems},
+      author={Liu, Mengyu and Zhang, Lin and Xu, Weizhe and Jiang, Shixiong and Kong, Fanxin},
+      booktitle={ACM Transactions on Design Automation of Electronic Systems},
+      pages={TBA},
+      year={2024},
+      organization={ACM}
     }
 
 
