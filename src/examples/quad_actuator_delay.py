@@ -201,12 +201,12 @@ if __name__ == "__main__":
         ip.update_current_ref(ref[i])
         # attack here
         # ip state record the sensor data
-        # u = delay_attack.launch(ip.cur_u, ip.cur_index, ip.inputs)
-        # print('this is u', u)
-        # ip.evolve(u=u)
+        u = delay_attack.launch(ip.cur_u, ip.cur_index, ip.inputs)
+        print('this is u', u)
+        # attacked signal
+        ip.evolve(u=u)
         # ip.cur_feedback = delay_attack.launch(ip.cur_feedback, ip.cur_index, ip.states)
-        print('current input', ip.cur_u)
-        ip.evolve()
+        # print('current input', ip.cur_u)
     # 定义数据
     t_arr = np.linspace(0, 3, max_index + 1)
     ref2 = [x[-4] for x in ip.refs[:max_index + 1]]
