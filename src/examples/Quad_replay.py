@@ -131,9 +131,11 @@ control_limit = {
 # utils parameters
 
 
-KP =  100
-KI = 0
-KD = -19
+KP = 100
+KI = 20
+KD = -40
+
+
 class Controller:
     def __init__(self, dt):
         self.dt = dt
@@ -192,8 +194,9 @@ if __name__ == "__main__":
     # bias attack example
     from cpsim import Attack
 
-    bias = np.array([5, 1.2, 0.1, 0.2, 0.1, 0,0.2, 0, 3, 0.2, 0.2, 0.1])
-    bias_attack = Attack('bias', bias, 300)
+    # bias = np.array([0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0.2, 0.1])
+    params={'start': 0, 'end': 10, 'bias': 0.1, 'step': 1}
+    bias_attack = Attack('replay', params, 300)
     ip = quadrotor('test', dt, max_index)
     for i in range(0, max_index + 1):
         assert ip.cur_index == i
@@ -205,7 +208,6 @@ if __name__ == "__main__":
     t_arr = np.linspace(0, 3, max_index + 1)
     ref2 = [x[-4] for x in ip.refs[:max_index + 1]]
     y2_arr = [x[-4] for x in ip.outputs[:max_index + 1]]
-
     u_arr = [x[0] for x in ip.inputs[:max_index + 1]]
 
     import matplotlib.pyplot as plt
@@ -224,12 +226,6 @@ if __name__ == "__main__":
     fig2, ax2 = plt.subplots()
     ax2.set_title('u-force')
     ax2.plot(t_arr, u_arr, label='u_arr')
-    ax2.axhline(y=9.81, color='red', linestyle='--', label='y=9.81')
-    ax2.annotate('9.81', xy=(0, 9.81), xytext=(-10, 0),
-                 textcoords='offset points', color='red', ha='right', va='center')
-
     ax2.legend()
     plt.savefig('quadrotor-uforce.png')
     plt.show()
-
-    print('u_arr',u_arr)

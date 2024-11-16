@@ -131,9 +131,11 @@ control_limit = {
 # utils parameters
 
 
-KP =  100
-KI = 0
-KD = -19
+KP = 100
+KI = 20
+KD = -40
+
+
 class Controller:
     def __init__(self, dt):
         self.dt = dt
@@ -192,20 +194,22 @@ if __name__ == "__main__":
     # bias attack example
     from cpsim import Attack
 
-    bias = np.array([5, 1.2, 0.1, 0.2, 0.1, 0,0.2, 0, 3, 0.2, 0.2, 0.1])
-    bias_attack = Attack('bias', bias, 300)
+    bias_attack = Attack('delay', 10, 300)
     ip = quadrotor('test', dt, max_index)
     for i in range(0, max_index + 1):
         assert ip.cur_index == i
         ip.update_current_ref(ref[i])
         # attack here
-        ip.cur_feedback = bias_attack.launch(ip.cur_feedback, ip.cur_index, ip.states)
-        ip.evolve()
+        # self.inputs[self.cur_index]
+        # inputs the the recorded of control inputs
+        # ip.cur_feedback = bias_attack.launch(ip.cur_feedback, ip.cur_index, ip.inputs)
+        u=bias_attack.launch(ip.cur_feedback, ip.cur_index, ip.inputs)
+        # control output
+        ip.evolve(u=u)
     # 定义数据
     t_arr = np.linspace(0, 3, max_index + 1)
     ref2 = [x[-4] for x in ip.refs[:max_index + 1]]
     y2_arr = [x[-4] for x in ip.outputs[:max_index + 1]]
-
     u_arr = [x[0] for x in ip.inputs[:max_index + 1]]
 
     import matplotlib.pyplot as plt
@@ -217,19 +221,13 @@ if __name__ == "__main__":
     ax1.plot(t_arr, y2_arr, label='y2_arr')
     ax1.plot(t_arr, ref2, label='ref2')
     ax1.legend()
-    plt.savefig('quadrotor-altitude.png')
+    plt.savefig('quadrotor-altitude-delay.png')
     plt.show()
 
     # 第二个图
     fig2, ax2 = plt.subplots()
     ax2.set_title('u-force')
     ax2.plot(t_arr, u_arr, label='u_arr')
-    ax2.axhline(y=9.81, color='red', linestyle='--', label='y=9.81')
-    ax2.annotate('9.81', xy=(0, 9.81), xytext=(-10, 0),
-                 textcoords='offset points', color='red', ha='right', va='center')
-
     ax2.legend()
-    plt.savefig('quadrotor-uforce.png')
+    plt.savefig('quadrotor-uforce-delay.png')
     plt.show()
-
-    print('u_arr',u_arr)

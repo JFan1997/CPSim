@@ -31,27 +31,23 @@ def cstr(t, x, u, Tf=350, Caf=1, use_imath=False):
     Tc = u[0]
     # Tf = Feed Temperature (K)
     # Caf = Feed Concentration (mol/m^3)
-
     # States (2):
     # Concentration of A in CSTR (mol/m^3)
     Ca = x[0]
     # Temperature in CSTR (K)
     T = x[1]
-
     # reaction rate
     if use_imath:
         from interval import imath
         rA = k0 * imath.exp(-EoverR / T) * Ca
     else:
         rA = k0 * np.exp(-EoverR / T) * Ca
-
     # Calculate concentration derivative
     dCadt = q / V * (Caf - Ca) - rA
     # Calculate temperature derivative
     dTdt = q / V * (Tf - T) \
            + mdelH / (rho * Cp) * rA \
            + UA / V / rho / Cp * (Tc - T)
-
     # Return xdot:
     if use_imath:
         return [dCadt, dTdt]
@@ -61,6 +57,7 @@ def cstr(t, x, u, Tf=350, Caf=1, use_imath=False):
         xdot[1] = dTdt
         return xdot
 
+
 def cstr_imath(t, x, u, Tf=350, Caf=1):
     return cstr(t=t, x=x, u=u, Tf=Tf, Caf=Caf, use_imath=True)
 
@@ -68,6 +65,7 @@ def cstr_imath(t, x, u, Tf=350, Caf=1):
 def f(x, u, dt):
     dx = cstr(None, x, u)
     return x + dt * dx
+
 
 def jfx(x, u, dt):
     Ca = x[0]
@@ -78,6 +76,7 @@ def jfx(x, u, dt):
         [dt * k0 * mdelH * exp(-EoverR / T) / (Cp * rho),
          dt * (Ca * EoverR * k0 * mdelH * exp(-EoverR / T) / (Cp * T ** 2 * rho) - q / V - UA / (Cp * V * rho)) + 1]])
     return Ad
+
 
 def jfu(x, u, dt):
     Ca = x[0]
@@ -94,8 +93,8 @@ x_0 = np.array([0.98, 280])
 
 # utils parameters
 KP = 0.5 * 1.0
-KI =  KP / (3 / 8.0)
-KD =  - KP * 0.1
+KI = KP / (3 / 8.0)
+KD = - KP * 0.1
 u_0 = 274.57786
 control_limit = {
     'lo': np.array([250]),
@@ -112,7 +111,7 @@ class Controller:
         self.set_control_limit(control_limit['lo'], control_limit['up'])
 
     def update(self, ref: np.ndarray, feedback_value: np.ndarray, current_time) -> np.ndarray:
-        self.pid.set_reference(ref[1])             # only care about the 2nd state here
+        self.pid.set_reference(ref[1])  # only care about the 2nd state here
         cin = self.pid.update(feedback_value[1], current_time)  # only use the 2nd state here
         return np.array([cin])
 
@@ -154,7 +153,7 @@ class CSTR(Simulator):
 if __name__ == "__main__":
     max_index = 1000
     dt = 0.02
-    ref = [np.array([0, 300])] * (max_index+1)
+    ref = [np.array([0, 300])] * (max_index + 1)
     # noise = {
     #     'process': {
     #         'type': 'box_uniform',
@@ -163,7 +162,6 @@ if __name__ == "__main__":
     # }
     noise = None
     cstr_model = CSTR('test', dt, max_index, noise)
-
 
     for i in range(0, max_index + 1):
         assert cstr_model.cur_index == i
@@ -178,7 +176,6 @@ if __name__ == "__main__":
         # cstr_model.cur_feedback   # attack on this
 
         cstr_model.evolve()
-
 
     # print results
     import matplotlib.pyplot as plt

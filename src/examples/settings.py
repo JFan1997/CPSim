@@ -1,6 +1,7 @@
+import sys
+
 import numpy as np
 
-import sys
 sys.path.append('../')
 
 from cpsim.models.linear.motor_speed import MotorSpeed
@@ -11,6 +12,7 @@ from cpsim.models.nonlinear.inverted_pendulum import InvertedPendulum, inverted_
 from cpsim.models.nonlinear.vessel import VESSEL, deg2rad, heading_circle, kn2ms, whole_model_imath
 from cpsim.attack import Attack
 from cpsim.formal.strip import Strip
+
 
 # from simulators.linear.motor_speed import MotorSpeed
 # from simulators.linear.quadruple_tank import QuadrupleTank
@@ -65,7 +67,7 @@ class motor_speed_bias:
     safe_set_up = np.array([5.07, 80])
     target_set_lo = np.array([3.9, 35.81277766])
     target_set_up = np.array([4.1, 60])
-    recovery_ref = np.array([4,  41.81277766])
+    recovery_ref = np.array([4, 41.81277766])
     Q = np.diag([100, 1])
     QN = np.diag([100, 1])
     R = np.diag([1])
@@ -122,92 +124,94 @@ class quadruple_tank_bias:
 
 # -------------------- cstr ----------------------------
 class cstr_bias:
-    name = 'cstr_bias'   # benchmark name
-    max_index = 160      # simulation time period
-    ref = [np.array([0.98189, 300.00013])] * (max_index+1)    # reference state
-    dt = 0.1            # sampling time
+    name = 'cstr_bias'  # benchmark name
+    max_index = 160  # simulation time period
+    ref = [np.array([0.98189, 300.00013])] * (max_index + 1)  # reference state
+    dt = 0.1  # sampling time
     noise = {
-        'process': {       # process/sensor disturbance
+        'process': {  # process/sensor disturbance
             'type': 'box_uniform',
             'param': {'lo': np.array([0, 0]), 'up': np.array([0.1, 0.1])}  # the intensity of disturbance
         }
     }
     # noise = None
-    model = CSTR(name, dt, max_index, noise=noise)      # benchmark model  (defined in simulators folder)
-    ode_imath = cstr_imath                              # model for interval arithmetic
-    
-    attack_start_index = 100                 # index when attack starts
-    recovery_index = 110                     # index when recovery starts
-    bias = np.array([0, -30])                # bias sensor attack intensity
-    unsafe_states_onehot = [0, 1]            # indicate which state is unsafe / affected by attack
-    attack = Attack('bias', bias, attack_start_index)      # attack type and intensity
-    
-    output_index = 1        # index in state to be plotted
-    ref_index = 1           # index in state to be plotted
+    model = CSTR(name, dt, max_index, noise=noise)  # benchmark model  (defined in simulators folder)
+    ode_imath = cstr_imath  # model for interval arithmetic
 
-    safe_set_lo = np.array([-5, 250])        # safe set lower bound
-    safe_set_up = np.array([5, 360])         # safe set upper bound
-    target_set_lo = np.array([-5, 299])      # target set lower bound
-    target_set_up = np.array([5, 301])       # target set upper bound
-    control_lo = np.array([250])             # control lower bound
-    control_up = np.array([350])             # control upper bound
-    recovery_ref = np.array([0.98189, 300.00013])   # recovery target state
+    attack_start_index = 100  # index when attack starts
+    recovery_index = 110  # index when recovery starts
+    bias = np.array([0, -30])  # bias sensor attack intensity
+    unsafe_states_onehot = [0, 1]  # indicate which state is unsafe / affected by attack
+    attack = Attack('bias', bias, attack_start_index)  # attack type and intensity
+
+    output_index = 1  # index in state to be plotted
+    ref_index = 1  # index in state to be plotted
+
+    safe_set_lo = np.array([-5, 250])  # safe set lower bound
+    safe_set_up = np.array([5, 360])  # safe set upper bound
+    target_set_lo = np.array([-5, 299])  # target set lower bound
+    target_set_up = np.array([5, 301])  # target set upper bound
+    control_lo = np.array([250])  # control lower bound
+    control_up = np.array([350])  # control upper bound
+    recovery_ref = np.array([0.98189, 300.00013])  # recovery target state
 
     # Q = np.diag([1, 1])
     # QN = np.diag([1, 1])
-    Q = np.diag([1, 1000])           # state cost for LQR or MPC
-    QN = np.diag([1, 1000])          # final state cost for LQR or MPC
-    R = np.diag([1])                 # control cost for LQR or MPC
+    Q = np.diag([1, 1000])  # state cost for LQR or MPC
+    QN = np.diag([1, 1000])  # final state cost for LQR or MPC
+    R = np.diag([1])  # control cost for LQR or MPC
 
-    MPC_freq = 1                   # optimization frequency
-    nx = 2                         # state dimension
-    nu = 1                         # control dimension
+    MPC_freq = 1  # optimization frequency
+    nx = 2  # state dimension
+    nu = 1  # control dimension
 
     # plot
-    y_lim = (280, 360)              # y axis range to be plotted
-    x_lim = (8, dt * 200)           # x axis range to be plotted
-    strip = (target_set_lo[output_index], target_set_up[output_index])     # strip to be plotted
-    y_label = 'Temperature [K]'     # y axis label
+    y_lim = (280, 360)  # y axis range to be plotted
+    x_lim = (8, dt * 200)  # x axis range to be plotted
+    strip = (target_set_lo[output_index], target_set_up[output_index])  # strip to be plotted
+    y_label = 'Temperature [K]'  # y axis label
 
     # for linearizations for baselines, find equilibrium point and use below
-    u_ss = np.array([274.57786])   # equilibrium control  for baseline only
+    u_ss = np.array([274.57786])  # equilibrium control  for baseline only
     x_ss = np.array([0.98472896, 300.00335862])  # equilibrium state for baseline only
 
-#---------------quadrotor----------------------------
+
+# ---------------quadrotor----------------------------
 class quad_bias:
     name = 'quad_bias'
     max_index = 500
-    ref = [np.array([0,0,0,0,0,0,0,0,5,0,0,0])] * (max_index+1)
+    ref = [np.array([0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0])] * (max_index + 1)
     dt = 0.01
     noise_term = 0.00024
     noise = {
         'process': {
             'type': 'box_uniform',
-            'param': {'lo': np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]), 'up': np.array([noise_term, noise_term, noise_term, noise_term, noise_term, noise_term, noise_term, noise_term, 0.0001, noise_term, noise_term, 0.0001])} # change 0.01 to 1 or 5 or something
+            'param': {'lo': np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]), 'up': np.array(
+                [noise_term, noise_term, noise_term, noise_term, noise_term, noise_term, noise_term, noise_term, 0.0001,
+                 noise_term, noise_term, 0.0001])}  # change 0.01 to 1 or 5 or something
         }
     }
     # noise = None
     model = quadrotor(name, dt, max_index, noise=noise)
     ode_imath = quad_imath
-    
-    attack_start_index = 250 # index in time
-    recovery_index = 270 # index in time
-    bias = np.array([0, 0, 0, 0, 0 ,0, 0, 0, -1, 0, 0, 0])
+
+    attack_start_index = 250  # index in time
+    recovery_index = 270  # index in time
+    bias = np.array([0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0])
     unsafe_states_onehot = [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
     attack = Attack('bias', bias, attack_start_index)
-    
-    output_index = 8 # index in state
-    ref_index = 8 # index in state
 
-    target_set_lo = np.array([-1e20, -1e20, -1e20, -1e20, -1e20, -1e20, -1e20, -1e20, 5-0.2, -1e20, -1e20, -1e20])
-    target_set_up = np.array([1e20, 1e20, 1e20, 1e20, 1e20, 1e20, 1e20, 1e20, 5+0.2, 1e20, 1e20, 1e20])
+    output_index = 8  # index in state
+    ref_index = 8  # index in state
+
+    target_set_lo = np.array([-1e20, -1e20, -1e20, -1e20, -1e20, -1e20, -1e20, -1e20, 5 - 0.2, -1e20, -1e20, -1e20])
+    target_set_up = np.array([1e20, 1e20, 1e20, 1e20, 1e20, 1e20, 1e20, 1e20, 5 + 0.2, 1e20, 1e20, 1e20])
     safe_set_lo = np.array([-1e20, -1e20, -1e20, -1e20, -1e20, -1e20, -1e20, -1e20, 0, -1e20, -1e20, -1e20])
     safe_set_up = np.array([1e20, 1e20, 1e20, 1e20, 1e20, 1e20, 1e20, 1e20, 200, 1e20, 1e20, 1e20])
 
-
     control_lo = np.array([-10])
     control_up = np.array([100])
-    recovery_ref = np.array([0,0,0,0,0,0,0,0,5,0,0,0])
+    recovery_ref = np.array([0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0])
 
     # Q = np.diag([1, 1])
     # QN = np.diag([1, 1])
@@ -229,22 +233,23 @@ class quad_bias:
 
     # for linearizations for baselines, find equilibrium point and use below
     u_ss = np.array([9.81])
-    x_ss = np.array([0,0,0,0,0,0,0,0,5,0,0,0])
+    x_ss = np.array([0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0])
 
     # for EKF
     C_during_atk = np.diag([0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0])
     f = lambda x, u, dt: x + dt * quad(None, x, u)
     jh = lambda x, u, dt: np.diag([0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0])
-    StateCov = np.eye(12)*(0.00001)
-    SensorCov = np.eye(12)*(0.00001)
+    StateCov = np.eye(12) * (0.00001)
+    SensorCov = np.eye(12) * (0.00001)
     jf = quad_jfx
-    
 
     # -------------------- Inverted Pendulum ----------------------------
+
+
 class pendulum_bias:
     name = 'pendulum_bias'
     max_index = 800
-    ref = [np.array([1, 0, np.pi, 0])]  * (max_index+1)
+    ref = [np.array([1, 0, np.pi, 0])] * (max_index + 1)
     dt = 0.02
     # noise = {
     #     'process': {
@@ -255,19 +260,19 @@ class pendulum_bias:
     noise = None
     model = InvertedPendulum(name, dt, max_index, noise=noise)
     ode_imath = inverted_pendulum_imath
-    
-    attack_start_index = 300 # index in time
-    recovery_index = 330 # index in time
+
+    attack_start_index = 300  # index in time
+    recovery_index = 330  # index in time
     bias = np.array([0, 0, 0.01, 0])
     unsafe_states_onehot = [0, 0, 1, 0]
     attack = Attack('bias', bias, attack_start_index)
     final = np.array([0, 0, np.pi, 0])
-    output_index = 2 # index in state
-    ref_index = 2 # index in state
-    safe_set_lo = [-100000, -100000, np.pi-2, -100000]
-    safe_set_up = [100000, 100000, np.pi+2, 100000]
-    target_set_lo = np.array([-100000, -100000, np.pi-2, -100000])
-    target_set_up = np.array([100000, 100000, np.pi+2, 100000])
+    output_index = 2  # index in state
+    ref_index = 2  # index in state
+    safe_set_lo = [-100000, -100000, np.pi - 2, -100000]
+    safe_set_up = [100000, 100000, np.pi + 2, 100000]
+    target_set_lo = np.array([-100000, -100000, np.pi - 2, -100000])
+    target_set_up = np.array([100000, 100000, np.pi + 2, 100000])
     control_lo = np.array([-50])
     control_up = np.array([50])
     recovery_ref = np.array([1, 0, np.pi, 0])
@@ -292,41 +297,44 @@ class pendulum_bias:
     u_ss = np.array([0])
     x_ss = np.array([1, 0, 3.14, 0])
 
-    #---------------vessel----------------------------
+    # ---------------vessel----------------------------
+
+
 class vessel_bias:
     name = 'vessel_bias'
     max_index = 500
-    ref = [np.array([0, 0, heading_circle(deg2rad(90)), kn2ms(1), 0,0,0,0])] * (max_index+1)
+    ref = [np.array([0, 0, heading_circle(deg2rad(90)), kn2ms(1), 0, 0, 0, 0])] * (max_index + 1)
     dt = 1
     noise_term = 0.015
     noise = {
         'process': {
             'type': 'box_uniform',
-            'param': {'lo': np.array([0, 0, 0, 0, 0, 0, 0, 0]), 'up': np.array([noise_term, noise_term, noise_term, 0.0001, noise_term, noise_term, noise_term, noise_term])} # change 0.01 to 1 or 5 or something
+            'param': {'lo': np.array([0, 0, 0, 0, 0, 0, 0, 0]), 'up': np.array(
+                [noise_term, noise_term, noise_term, 0.0001, noise_term, noise_term, noise_term, noise_term])}
+            # change 0.01 to 1 or 5 or something
         }
     }
     # noise = None
     model = VESSEL(name, dt, max_index, noise=noise)
     ode_imath = whole_model_imath
-    
-    attack_start_index = 300 # index in time
-    recovery_index = 310 # index in time
-    bias = np.array([0, 0, 0, -0.5, 0 ,0, 0, 0])
+
+    attack_start_index = 300  # index in time
+    recovery_index = 310  # index in time
+    bias = np.array([0, 0, 0, -0.5, 0, 0, 0, 0])
     unsafe_states_onehot = [0, 0, 0, 1, 0, 0, 0, 0]
     attack = Attack('bias', bias, attack_start_index)
-    
-    output_index = 3 # index in state
-    ref_index = 3 # index in state
+
+    output_index = 3  # index in state
+    ref_index = 3  # index in state
 
     target_set_lo = np.array([-1e20, -1e20, -1e20, 0.5, -1e20, -1e20, -1e20, -1e20])
     target_set_up = np.array([1e20, 1e20, 1e20, 0.9, 1e20, 1e20, 1e20, 1e20])
     safe_set_lo = np.array([-1e20, -1e20, -1e20, -1500, -1e20, -1e20, -1e20, -1e20])
     safe_set_up = np.array([1e20, 1e20, 1e20, 1500, 1e20, 1e20, 1e20, 1e20])
 
-
     control_lo = np.array([0, -1])
     control_up = np.array([2, 1])
-    recovery_ref = np.array([0, 0, heading_circle(deg2rad(90)), kn2ms(1), 0,0,0,0])
+    recovery_ref = np.array([0, 0, heading_circle(deg2rad(90)), kn2ms(1), 0, 0, 0, 0])
 
     # Q = np.diag([1, 1])
     # QN = np.diag([1, 1])
@@ -347,5 +355,5 @@ class vessel_bias:
     strip = (target_set_lo[output_index], target_set_up[output_index])
 
     # for linearizations for baselines, find equilibrium point and use below
-    u_ss = np.array([0.1,0])
-    x_ss = np.array([0, 0, heading_circle(deg2rad(90)), kn2ms(1), 0,0,0,0])
+    u_ss = np.array([0.1, 0])
+    x_ss = np.array([0, 0, heading_circle(deg2rad(90)), kn2ms(1), 0, 0, 0, 0])

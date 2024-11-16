@@ -1,4 +1,9 @@
 import numpy as np
+
+from cpsim import Attack
+from cpsim.models.nonlinear.continuous_stirred_tank_reactor import CSTR, cstr_imath
+
+
 class cstr_bias:
     name = 'cstr_bias'  # benchmark name
     max_index = 180  # simulation time period
@@ -18,6 +23,7 @@ class cstr_bias:
     recovery_index = 100  # index when recovery starts
     bias = np.array([0, -30])  # bias sensor attack intensity
     unsafe_states_onehot = [0, 1]  # indicate which state is unsafe / affected by attack
+
     attack = Attack('bias', bias, attack_start_index)  # attack type and intensity
 
     output_index = 1  # index in state to be plotted

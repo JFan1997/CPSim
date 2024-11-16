@@ -1,7 +1,6 @@
 # Ref: Data-Driven Science and Engineering: Machine Learning, Dynamical Systems, and Control (Session 8.7, Page 300)
 
 import numpy as np
-
 from cpsim import Simulator
 from cpsim.controllers.LQR import LQR
 
@@ -15,20 +14,22 @@ b = 1  # pendulum up (b=1)
 
 
 def inverted_pendulum(t, x, u, use_imath=False):
-    u=u[0]
+    u = u[0]
     if use_imath:
         from interval import imath
         Sx = imath.sin(x[2])
         Cx = imath.cos(x[2])
         D = m * L * L * (M + m * (1 - Cx * Cx))
 
-        dx = [0,0,0,0]
+        dx = [0, 0, 0, 0]
         dx[0] = x[1]
-        dx[1] = (1 / D) * (-m * m * L * L * g * Cx * Sx + m * L * L * (m * L * x[3] * x[3] * Sx - d * x[1])) + m * L * L * (
-                1 / D) * u
+        dx[1] = (1 / D) * (
+                    -m * m * L * L * g * Cx * Sx + m * L * L * (m * L * x[3] * x[3] * Sx - d * x[1])) + m * L * L * (
+                        1 / D) * u
         dx[2] = x[3]
-        dx[3] = (1 / D) * ((m + M) * m * g * L * Sx - m * L * Cx * (m * L * x[3] * x[3] * Sx - d * x[1])) - m * L * Cx * (
-                1 / D) * u
+        dx[3] = (1 / D) * (
+                    (m + M) * m * g * L * Sx - m * L * Cx * (m * L * x[3] * x[3] * Sx - d * x[1])) - m * L * Cx * (
+                        1 / D) * u
     else:
         Sx = np.sin(x[2])
         Cx = np.cos(x[2])
@@ -36,15 +37,19 @@ def inverted_pendulum(t, x, u, use_imath=False):
 
         dx = np.zeros((4,))
         dx[0] = x[1]
-        dx[1] = (1 / D) * (-m * m * L * L * g * Cx * Sx + m * L * L * (m * L * x[3] * x[3] * Sx - d * x[1])) + m * L * L * (
-                1 / D) * u
+        dx[1] = (1 / D) * (
+                    -m * m * L * L * g * Cx * Sx + m * L * L * (m * L * x[3] * x[3] * Sx - d * x[1])) + m * L * L * (
+                        1 / D) * u
         dx[2] = x[3]
-        dx[3] = (1 / D) * ((m + M) * m * g * L * Sx - m * L * Cx * (m * L * x[3] * x[3] * Sx - d * x[1])) - m * L * Cx * (
-                1 / D) * u
+        dx[3] = (1 / D) * (
+                    (m + M) * m * g * L * Sx - m * L * Cx * (m * L * x[3] * x[3] * Sx - d * x[1])) - m * L * Cx * (
+                        1 / D) * u
     return dx
 
+
 def inverted_pendulum_imath(t, x, u):
-    return inverted_pendulum(t=t,x=x,u=u, use_imath=True)
+    return inverted_pendulum(t=t, x=x, u=u, use_imath=True)
+
 
 x_0 = np.array([-1, 0, np.pi + 0.1, 0])
 control_limit = {
@@ -60,8 +65,9 @@ A = np.array([[0, 1, 0, 0],
 B = np.array([[0], [1 / M], [0], [b * 1 / (M * L)]])
 
 R = np.array([[0.0001]])
-Q = np.eye(4)*10
-Q[2,2] = 1000
+Q = np.eye(4) * 10
+Q[2, 2] = 1000
+
 
 class Controller:
     def __init__(self, dt, control_limit=None):
@@ -72,10 +78,12 @@ class Controller:
         self.lqr.set_reference(ref)
         cin = self.lqr.update(feedback_value, current_time)
         return cin
+
     def set_control_limit(self, control_lo, control_up):
         self.control_lo = control_lo
         self.control_up = control_up
         self.lqr.set_control_limit(self.control_lo[0], self.control_up[0])
+
     def clear(self):
         return
 
@@ -111,9 +119,10 @@ class InvertedPendulum(Simulator):
 if __name__ == "__main__":
     max_index = 800
     dt = 0.02
-    ref = [np.array([1, 0, np.pi, 0])] * (max_index+1)
+    ref = [np.array([1, 0, np.pi, 0])] * (max_index + 1)
     # bias attack example
     from cpsim import Attack
+
     bias = np.array([-1, 0, 0, 0])
     bias_attack = Attack('bias', bias, 300)
     ip = InvertedPendulum('test', dt, max_index)

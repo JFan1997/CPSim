@@ -202,7 +202,9 @@ class Simulator:
         # record data
         self.feedbacks[self.cur_index] = deepcopy(self.cur_feedback)
         self.refs[self.cur_index] = deepcopy(self.cur_ref)
-
+        # sensor data in this past time to assign the past time sensor data to current time
+        # record control signal to an array,
+        # record the control signals to an array,
         # compute utils input
         if self.feedback_type:
             self.cur_u = self.controller.update(self.cur_ref, self.cur_feedback, self.dt * self.cur_index)
@@ -212,6 +214,7 @@ class Simulator:
         if not (u is None):
             self.cur_u = u
         assert self.cur_u.shape == (self.m,)
+        # record control signal to an array
         self.inputs[self.cur_index] = deepcopy(self.cur_u)
 
         # implement utils input
@@ -230,7 +233,6 @@ class Simulator:
         assert self.cur_y.shape == (self.p,)
         self.states[self.cur_index] = deepcopy(self.cur_x)
         self.outputs[self.cur_index] = deepcopy(self.cur_y)
-
         # prepare feedback
         if self.feedback_type:
             self.cur_feedback = self.cur_x if self.feedback_type == 'state' else self.cur_y

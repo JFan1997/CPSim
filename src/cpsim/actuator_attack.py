@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class Attack:
+class ActuatorAttack:
     def __init__(self, category, param, start_index, end_index=None):
         """
         category: 'bias', 'delay', 'replay'  todo: 'stealthy'
@@ -27,6 +27,7 @@ class Attack:
         if self.cat == 'bias':
             # param is the bias on each element
             return cur_data + self.param
+            # return cur_control_signal + self.param
         if self.cat == 'delay':
             # param is the number of delay steps
             if self.cur_index - self.start_index > self.param:
@@ -60,6 +61,7 @@ class Attack:
 
 
 if __name__ == "__main__":
-    attack1 = Attack('bias', np.array([1, 0, 0, 0]), 0)
-    attack2 = Attack('delay', np.array([1, 0, 0, 0]), 0)
-    print(attack1.get_C_filter())
+    pass
+    # attack1 = Attack('bias', np.array([1, 0, 0, 0]), 0)
+    # attack2 = Attack('delay', np.array([1, 0, 0, 0]), 0)
+    # print(attack1.get_C_filter())
