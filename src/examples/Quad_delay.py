@@ -201,7 +201,6 @@ if __name__ == "__main__":
         ip.update_current_ref(ref[i])
         # attack here
         # self.inputs[self.cur_index]
-        # inputs the the recorded of control inputs
         # ip.cur_feedback = bias_attack.launch(ip.cur_feedback, ip.cur_index, ip.inputs)
         u=bias_attack.launch(ip.cur_feedback, ip.cur_index, ip.inputs)
         # control output
