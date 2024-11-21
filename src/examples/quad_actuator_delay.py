@@ -199,14 +199,8 @@ if __name__ == "__main__":
     for i in range(0, max_index + 1):
         assert ip.cur_index == i
         ip.update_current_ref(ref[i])
-        # attack here
-        # ip state record the sensor data
         u = delay_attack.launch(ip.cur_u, ip.cur_index, ip.inputs)
-        print('this is u', u)
-        # attacked signal
         ip.evolve(u=u)
-        # ip.cur_feedback = delay_attack.launch(ip.cur_feedback, ip.cur_index, ip.states)
-        # print('current input', ip.cur_u)
     # 定义数据
     t_arr = np.linspace(0, 3, max_index + 1)
     ref2 = [x[-4] for x in ip.refs[:max_index + 1]]
@@ -216,19 +210,37 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
     import numpy as np
 
+    # 第300步的数据点
+    step = 300
+    t_step = t_arr[step]
+    u_step = u_arr[step]
+    y2_step = y2_arr[step]
+    ref2_step = ref2[step]
     # 第一个图
     fig1, ax1 = plt.subplots()
     ax1.set_title('Altitude')
     ax1.plot(t_arr, y2_arr, label='y2_arr')
     ax1.plot(t_arr, ref2, label='ref2')
+
+    ax1.scatter(t_step, y2_step, color='red', label=f'Step {step}')
+    ax1.text(t_step, y2_step, f'({t_step}, {y2_step:.2f})', fontsize=9, color='red', ha='left')
+
+    ax1.scatter(t_step, ref2_step, color='green', label=f'Step {step}')
+    ax1.text(t_step, ref2_step, f'({t_step}, {ref2_step:.2f})', fontsize=9, color='green', ha='left')
     ax1.legend()
     plt.savefig('quadrotor-altitude-delay.png')
     plt.show()
 
-    # 第二个图
+    # 绘图
     fig2, ax2 = plt.subplots()
     ax2.set_title('u-force')
     ax2.plot(t_arr, u_arr, label='u_arr')
+
+    # 标记第300步的点
+    ax2.scatter(t_step, u_step, color='red', label=f'Step {step}')
+    ax2.text(t_step, u_step, f'({t_step}, {u_step:.2f})', fontsize=9, color='red', ha='left')
+    # 添加图例
     ax2.legend()
+    # 保存和展示
     plt.savefig('quadrotor-uforce-delay.png')
     plt.show()
