@@ -192,54 +192,40 @@ if __name__ == "__main__":
     # reference value
     ref = [np.array([0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0])] * (max_index + 1)
     # bias attack example
-    from cpsim.actuator_attack import ActuatorAttack
+    from cpsim import Attack
 
+    # bias = np.array([0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0.2, 0.1])
+    params={'start': 0, 'end': 10, 'bias': 0.1, 'step': 1}
+    bias_attack = Attack('replay', params, 300)
     ip = quadrotor('test', dt, max_index)
-    bias = np.array([-5])
-    delay_attack = ActuatorAttack('bias', bias, 300)
     for i in range(0, max_index + 1):
         assert ip.cur_index == i
         ip.update_current_ref(ref[i])
-        u = ip.controller.update(ip.cur_ref, ip.cur_feedback,
-                                             ip.dt * ip.cur_index)
-        print('this is action', u)
-        u= u + bias
-        print('this is action after', u)
-        # u = ip.controller.update(ip.cur_ref, ip.cur_feedback, ip.dt * ip.cur_index)
-        # ip.inputs.append(u)
-        # u = delay_attack.launch(ip.cur_u, ip.cur_index, ip.inputs)
-        ip.evolve(u=u)
+        # attack here
+        ip.cur_feedback = bias_attack.launch(ip.cur_feedback, ip.cur_index, ip.states)
+        ip.evolve()
+    # 定义数据
     t_arr = np.linspace(0, 3, max_index + 1)
     ref2 = [x[-4] for x in ip.refs[:max_index + 1]]
     y2_arr = [x[-4] for x in ip.outputs[:max_index + 1]]
     u_arr = [x[0] for x in ip.inputs[:max_index + 1]]
+
     import matplotlib.pyplot as plt
     import numpy as np
 
-    step = 300
-    t_step = t_arr[step]
-    u_step = u_arr[step]
-    y2_step = y2_arr[step]
-    ref2_step = ref2[step]
+    # 第一个图
     fig1, ax1 = plt.subplots()
     ax1.set_title('Altitude')
     ax1.plot(t_arr, y2_arr, label='y2_arr')
     ax1.plot(t_arr, ref2, label='ref2')
-
-    ax1.scatter(t_step, y2_step, color='red', label=f'Step {step}')
-    ax1.text(t_step, y2_step, f'({t_step}, {y2_step:.2f})', fontsize=9, color='red', ha='left')
-
-    ax1.scatter(t_step, ref2_step, color='green', label=f'Step {step}')
-    ax1.text(t_step, ref2_step, f'({t_step}, {ref2_step:.2f})', fontsize=9, color='green', ha='left')
     ax1.legend()
-    plt.savefig('quadrotor-altitude-delay.png')
+    plt.savefig('./figs/quadrotor-altitude.png')
     plt.show()
 
+    # 第二个图
     fig2, ax2 = plt.subplots()
     ax2.set_title('u-force')
     ax2.plot(t_arr, u_arr, label='u_arr')
-    ax2.scatter(t_step, u_step, color='red', label=f'Step {step}')
-    ax2.text(t_step, u_step, f'({t_step}, {u_step:.2f})', fontsize=9, color='red', ha='left')
     ax2.legend()
-    plt.savefig('quadrotor-uforce-delay.png')
+    plt.savefig('./figs/quadrotor-uforce.png')
     plt.show()

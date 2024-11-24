@@ -41,7 +41,7 @@ x_0 = np.array([-0.5, 0, 0, 0])
 Q = np.eye(4)
 R = np.eye(1) * 10
 
-control_limit = {'lo': np.array([-0.261799]), 'up': np.array([0.261799])}
+control_limit = { 'lo': np.array([-0.261799]), 'up': np.array([0.261799])}
 
 
 class Controller:
@@ -88,29 +88,39 @@ if __name__ == "__main__":
             'param': {'C': np.eye(4) * 0.001}
         }
     }
-
-    from cpsim.actuator_attack import ActuatorAttack
-    delay_attack = ActuatorAttack('delay', 10, 300)
     lk = LaneKeeping('test', dt, max_index, noise)
-    # for i in range(0, max_index + 1):
-    #     assert motor_speed.cur_index == i
-    #
-    #     motor_speed.update_current_ref(ref[i])
-    #     u = delay_attack.launch(motor_speed.cur_u, motor_speed.cur_index, motor_speed.inputs)
-    #     motor_speed.evolve(u=u)
+    from cpsim import Attack
 
+    # bias = np.array([0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0.2, 0.1])
+    params={'start': 0, 'end': 10, 'bias': 0.1, 'step': 1}
+    bias_attack = Attack('replay', params, 100)
     for i in range(0, max_index + 1):
         assert lk.cur_index == i
         lk.update_current_ref(ref[i])
-        u = delay_attack.launch(lk.cur_u, lk.cur_index, lk.inputs)
-        # attack here
-        lk.evolve(u=u)
-    # print results
+        lk.cur_feedback = bias_attack.launch(lk.cur_feedback, lk.cur_index, lk.states)
+        lk.evolve()
+    # 定义数据
+    t_arr = np.linspace(0, 3, max_index + 1)
+    ref2 = [x[-4] for x in lk.refs[:max_index + 1]]
+    y2_arr = [x[-4] for x in lk.outputs[:max_index + 1]]
+    u_arr = [x[0] for x in lk.inputs[:max_index + 1]]
+
     import matplotlib.pyplot as plt
+    import numpy as np
 
-    t_arr = np.linspace(0, 10, max_index + 1)
-    ref = [x[0] for x in lk.refs[:max_index + 1]]
-    y_arr = [x[0] for x in lk.outputs[:max_index + 1]]
+    # 第一个图
+    fig1, ax1 = plt.subplots()
+    # ax1.set_title('Altitude')
+    ax1.plot(t_arr, y2_arr, label='y2_arr')
+    ax1.plot(t_arr, ref2, label='ref2')
+    ax1.legend()
+    plt.savefig('./figs/lane_keeping_replay.png')
+    plt.show()
 
-    plt.plot(t_arr, y_arr, t_arr, ref)
+    # 第二个图
+    fig2, ax2 = plt.subplots()
+    ax2.set_title('u-force')
+    ax2.plot(t_arr, u_arr, label='u_arr')
+    ax2.legend()
+    plt.savefig('./figs/lane-keeping-uforce_replay.png')
     plt.show()

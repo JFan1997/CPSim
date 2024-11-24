@@ -88,28 +88,66 @@ if __name__ == "__main__":
             'param': {'C': np.eye(2) * 0.1}
         }
     }
-
-    from cpsim.actuator_attack import ActuatorAttack
-    delay_attack = ActuatorAttack('delay', 10, 300)
-    motor_speed = MotorSpeed('test', dt, max_index, noise)
+    # ip = MotorSpeed('test', dt, max_index, noise)
+    from cpsim import Attack
+    params={'start': 0, 'end': 10, 'bias': 0.1, 'step': 1}
+    delay_attack = Attack('replay', params, 500)
+    ip = MotorSpeed('test', dt, max_index, noise)
 
 
     for i in range(0, max_index + 1):
-        assert motor_speed.cur_index == i
+        assert ip.cur_index == i
 
-        motor_speed.update_current_ref(ref[i])
-        u = delay_attack.launch(motor_speed.cur_u, motor_speed.cur_index, motor_speed.inputs)
-        motor_speed.evolve(u=u)
+        ip.update_current_ref(ref[i])
+        u = delay_attack.launch(ip.cur_u, ip.cur_index, ip.inputs)
+        ip.evolve(u=u)
     # print results
     import matplotlib.pyplot as plt
 
-    t_arr = np.linspace(0, 10, max_index + 1)
-    ref = [x[0] for x in motor_speed.refs[:max_index + 1]]
-    y_arr = [x[0] for x in motor_speed.outputs[:max_index + 1]]
+    # t_arr = np.linspace(0, 10, max_index + 1)
+    # ref = [x[0] for x in motor_speed.refs[:max_index + 1]]
+    # y_arr = [x[0] for x in motor_speed.outputs[:max_index + 1]]
 
-    plt.plot(t_arr, y_arr, t_arr, ref)
+    # plt.plot(t_arr, y_arr, t_arr, ref)
+    # plt.show()
+
+    # u_arr = [x[0] for x in motor_speed.inputs[:max_index + 1]]
+    # plt.plot(t_arr, u_arr)
+    # plt.show()
+    # from cpsim import Attack
+
+    # # bias = np.array([0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0.2, 0.1])
+    # params={'start': 0, 'end': 10, 'bias': 0.1, 'step': 1}
+    # bias_attack = Attack('replay', params, 500)
+
+    # for i in range(0, max_index + 1):
+    #     assert ip.cur_index == i
+    #     ip.update_current_ref(ref[i])
+    #     # attack here
+    #     ip.cur_feedback = bias_attack.launch(ip.cur_feedback, ip.cur_index, ip.states)
+    #     ip.evolve()
+    # # 定义数据
+    t_arr = np.linspace(0, 10, max_index + 1)
+    ref2 = [x[0] for x in ip.refs[:max_index + 1]]
+    y2_arr = [x[0] for x in ip.outputs[:max_index + 1]]
+    u_arr = [x[0] for x in ip.inputs[:max_index + 1]]
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    # 第一个图
+    fig1, ax1 = plt.subplots()
+    ax1.set_title('Altitude')
+    ax1.plot(t_arr, y2_arr, label='y2_arr')
+    ax1.plot(t_arr, ref2, label='ref2')
+    ax1.legend()
+    plt.savefig('./figs/quadrotor-altitude.png')
     plt.show()
 
-    u_arr = [x[0] for x in motor_speed.inputs[:max_index + 1]]
-    plt.plot(t_arr, u_arr)
+    # 第二个图
+    fig2, ax2 = plt.subplots()
+    ax2.set_title('u-force')
+    ax2.plot(t_arr, u_arr, label='u_arr')
+    ax2.legend()
+    plt.savefig('./figs/quadrotor-uforce.png')
     plt.show()
