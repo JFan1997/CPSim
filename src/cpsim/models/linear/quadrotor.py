@@ -1,4 +1,4 @@
-#Ref:https://www.kth.se/polopoly_fs/1.588039.1600688317!/Thesis%20KTH%20-%20Francesco%20Sabatino.pdf
+# Ref:https://www.kth.se/polopoly_fs/1.588039.1600688317!/Thesis%20KTH%20-%20Francesco%20Sabatino.pdf
 import numpy as np
 
 from cpsim import Simulator
@@ -77,6 +77,7 @@ class Quadrotor(Simulator):
                    Output Feedback
                Controller: PID
                """
+
     def __init__(self, name, dt, max_index, noise=None):
         super().__init__('Quadrotor ' + name, dt, max_index)
         self.linear(A, B, C)
@@ -89,6 +90,34 @@ class Quadrotor(Simulator):
         if noise:
             settings['noise'] = noise
         self.sim_init(settings)
+
+
+# class quadrotor(Simulator):
+#     """
+#     States: (4,)
+#         x[0]: location of cart
+#         x[1]: dx[0]
+#         x[2]: pendulum angle  (down:0, up:pi)
+#         x[3]: dx[1]
+#     Control Input: (1,)  [control_limit]
+#         u[0]: force on the cart
+#     Output: (4,)
+#         State Feedback
+#     Controller: LQR
+#     """
+#
+#     def __init__(self, name, dt, max_index, noise=None):
+#         super().__init__('Quadrotor ' + name, dt, max_index)
+#         self.nonlinear(ode=quad, n=12, m=1, p=12)
+#         controller = Controller(dt)
+#         settings = {
+#             'init_state': x_0,
+#             'feedback_type': 'state',
+#             'controller': controller
+#         }
+#         if noise:
+#             settings['noise'] = noise
+#         self.sim_init(settings)
 
 
 if __name__ == "__main__":

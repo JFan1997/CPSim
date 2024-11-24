@@ -2,7 +2,7 @@ import numpy as np
 
 
 class ActuatorAttack:
-    def __init__(self, category, param, start_index, end_index=None):
+    def __init__(self, category, param, start_index, end_index=None, simulator=None):
         """
         category: 'bias', 'delay', 'replay'  todo: 'stealthy'
         param
@@ -13,6 +13,7 @@ class ActuatorAttack:
         self.end_index = end_index if end_index is not None else np.inf
         self.cur_index = None
         self.disabled = False
+        self.simulator = simulator
 
     def update_param(self, param):
         self.param = param
@@ -26,7 +27,11 @@ class ActuatorAttack:
             return cur_data
         if self.cat == 'bias':
             # param is the bias on each element
-            return cur_data + self.param
+            # self.simulator.evolve()
+            u = self.simulator.controller.update(self.simulator.cur_ref, self.simulator.cur_feedback,
+                                                 self.simulator.dt * self.simulator.cur_index)
+            print('this is action',u)
+            return u + self.param
             # return cur_control_signal + self.param
         if self.cat == 'delay':
             # param is the number of delay steps
@@ -35,7 +40,7 @@ class ActuatorAttack:
                       history_intact_data[self.cur_index - self.param])
                 return history_intact_data[self.cur_index - self.param]
             else:
-                return history_intact_data[self.start_index-1]
+                return history_intact_data[self.start_index - 1]
         if self.cat == 'replay':
             # replay interval param['start'] ~ param['end']
             delta_index = self.cur_index - self.start_index

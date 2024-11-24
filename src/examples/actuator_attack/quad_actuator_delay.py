@@ -193,12 +193,21 @@ if __name__ == "__main__":
     ref = [np.array([0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0])] * (max_index + 1)
     # bias attack example
     from cpsim.actuator_attack import ActuatorAttack
-    delay_attack = ActuatorAttack('delay', 10, 300)
+
     ip = quadrotor('test', dt, max_index)
+    bias = np.array([-5])
+    delay_attack = ActuatorAttack('bias', bias, 300)
     for i in range(0, max_index + 1):
         assert ip.cur_index == i
         ip.update_current_ref(ref[i])
-        u = delay_attack.launch(ip.cur_u, ip.cur_index, ip.inputs)
+        u = ip.controller.update(ip.cur_ref, ip.cur_feedback,
+                                             ip.dt * ip.cur_index)
+        print('this is action', u)
+        u= u + bias
+        print('this is action after', u)
+        # u = ip.controller.update(ip.cur_ref, ip.cur_feedback, ip.dt * ip.cur_index)
+        # ip.inputs.append(u)
+        # u = delay_attack.launch(ip.cur_u, ip.cur_index, ip.inputs)
         ip.evolve(u=u)
     t_arr = np.linspace(0, 3, max_index + 1)
     ref2 = [x[-4] for x in ip.refs[:max_index + 1]]

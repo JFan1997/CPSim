@@ -88,12 +88,23 @@ if __name__ == "__main__":
             'param': {'C': np.eye(4) * 0.001}
         }
     }
+
+    from cpsim.actuator_attack import ActuatorAttack
+    delay_attack = ActuatorAttack('delay', 10, 300)
     lk = LaneKeeping('test', dt, max_index, noise)
+    # for i in range(0, max_index + 1):
+    #     assert motor_speed.cur_index == i
+    #
+    #     motor_speed.update_current_ref(ref[i])
+    #     u = delay_attack.launch(motor_speed.cur_u, motor_speed.cur_index, motor_speed.inputs)
+    #     motor_speed.evolve(u=u)
+
     for i in range(0, max_index + 1):
         assert lk.cur_index == i
         lk.update_current_ref(ref[i])
+        u = delay_attack.launch(lk.cur_u, lk.cur_index, lk.inputs)
         # attack here
-        lk.evolve()
+        lk.evolve(u=u)
     # print results
     import matplotlib.pyplot as plt
 
