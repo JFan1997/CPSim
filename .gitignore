@@ -107,6 +107,7 @@ lib/
 lib64/
 parts/
 sdist/
+myenv/
 var/
 wheels/
 share/python-wheels/
