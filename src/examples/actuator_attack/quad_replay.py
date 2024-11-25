@@ -227,5 +227,6 @@ if __name__ == "__main__":
     ax2.set_title('u-force')
     ax2.plot(t_arr, u_arr, label='u_arr')
     ax2.legend()
+    ax2.axhline(9.80656, color='red', label='gravity')
     plt.savefig('./figs/quadrotor-uforce.png')
     plt.show()
