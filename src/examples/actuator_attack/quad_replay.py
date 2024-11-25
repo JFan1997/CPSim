@@ -188,6 +188,7 @@ class quadrotor(Simulator):
 
 if __name__ == "__main__":
     max_index = 3000
+    replay_num = 3000
     dt = 0.01
     # reference value
     ref = [np.array([0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0])] * (max_index + 1)
@@ -196,7 +197,7 @@ if __name__ == "__main__":
 
     # bias = np.array([0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0.2, 0.1])
     params={'start': 0, 'end': 1, 'bias': 100, 'step': 1}
-    bias_attack = Attack('replay', params, 2250)
+    bias_attack = Attack('replay', params, replay_num)
     ip = quadrotor('test', dt, max_index)
     for i in range(0, max_index + 1):
         assert ip.cur_index == i
@@ -215,18 +216,18 @@ if __name__ == "__main__":
 
     # 第一个图
     fig1, ax1 = plt.subplots()
-    ax1.set_title('Altitude')
+    ax1.set_title(f'Altitude With Replay Attack Starting at {replay_num}')
     ax1.plot(t_arr, y2_arr, label='y2_arr')
     ax1.plot(t_arr, ref2, label='ref2')
     ax1.legend()
-    plt.savefig('./figs/quadrotor-altitude-2250.png')
-    plt.show()
+    plt.savefig(f'./figs/quadrotor-altitude-{replay_num}.png')
+    # plt.show()
 
     # 第二个图
     fig2, ax2 = plt.subplots()
-    ax2.set_title('u-force')
+    ax2.set_title(f'U-Force With Replay Attack Starting at {replay_num}')
     ax2.plot(t_arr, u_arr, label='u_arr')
-    ax2.legend()
     ax2.axhline(9.80656, color='red', label='gravity')
-    plt.savefig('./figs/quadrotor-uforce-2250.png')
+    ax2.legend()
+    plt.savefig(f'./figs/quadrotor-uforce-{replay_num}.png')
     plt.show()
