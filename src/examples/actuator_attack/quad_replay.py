@@ -196,7 +196,7 @@ if __name__ == "__main__":
 
     # bias = np.array([0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0.2, 0.1])
     params={'start': 0, 'end': 1, 'bias': 100, 'step': 1}
-    bias_attack = Attack('replay', params, 3000)
+    bias_attack = Attack('replay', params, 2250)
     ip = quadrotor('test', dt, max_index)
     for i in range(0, max_index + 1):
         assert ip.cur_index == i
@@ -219,7 +219,7 @@ if __name__ == "__main__":
     ax1.plot(t_arr, y2_arr, label='y2_arr')
     ax1.plot(t_arr, ref2, label='ref2')
     ax1.legend()
-    plt.savefig('./figs/quadrotor-altitude-3000.png')
+    plt.savefig('./figs/quadrotor-altitude-2250.png')
     plt.show()
 
     # 第二个图
@@ -228,5 +228,5 @@ if __name__ == "__main__":
     ax2.plot(t_arr, u_arr, label='u_arr')
     ax2.legend()
     ax2.axhline(9.80656, color='red', label='gravity')
-    plt.savefig('./figs/quadrotor-uforce-3000.png')
+    plt.savefig('./figs/quadrotor-uforce-2250.png')
     plt.show()
