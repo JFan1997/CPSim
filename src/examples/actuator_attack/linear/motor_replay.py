@@ -141,7 +141,7 @@ if __name__ == "__main__":
     ax1.plot(t_arr, y2_arr, label='y2_arr')
     ax1.plot(t_arr, ref2, label='ref2')
     ax1.legend()
-    plt.savefig('./figs/quadrotor-altitude.png')
+    plt.savefig('./figs/linear/motor.png')
     plt.show()
 
     # 第二个图
@@ -149,5 +149,5 @@ if __name__ == "__main__":
     ax2.set_title('u-force')
     ax2.plot(t_arr, u_arr, label='u_arr')
     ax2.legend()
-    plt.savefig('./figs/quadrotor-uforce.png')
+    plt.savefig('./figs/linear/motor-uforce.png')
     plt.show()

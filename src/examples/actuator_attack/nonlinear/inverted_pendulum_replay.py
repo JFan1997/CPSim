@@ -141,5 +141,5 @@ if __name__ == "__main__":
     ax3.set_title('u-force')
     ax3.plot(t_arr, u_arr)
     # print(u_arr)
-    plt.savefig("./figs/inverted_pendulum_replay.png")
+    plt.savefig("./figs/nonlinear/inverted_pendulum_replay.png")
     plt.show()
