@@ -188,12 +188,12 @@ if __name__ == "__main__":
     y_arr = [x[1] for x in cstr_model.outputs[:max_index + 1]]
 
     plt.title("Concentration of A in CSTR (mol/m^3)")
-    plt.savefig('./figs/nonlinear/CSTR-concentration.png')
     plt.plot(t_arr, y_arr, t_arr, ref)
+    plt.savefig('./figs/nonlinear/CSTR-concentration.png')
     plt.show()
 
     u_arr = [x[0] for x in cstr_model.inputs[:max_index + 1]]
     plt.title("Temperature in CSTR (K)")
-    plt.savefig('./figs/nonlinear/CSTR-temperature.png')
     plt.plot(t_arr, u_arr)
+    plt.savefig('./figs/nonlinear/CSTR-temperature.png')
     plt.show()

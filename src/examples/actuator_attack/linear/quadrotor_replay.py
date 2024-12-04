@@ -130,18 +130,22 @@ if __name__ == "__main__":
             'param': {'C': np.eye(12) * 0.001}
         }
     }
+    from cpsim import Attack
+    params={'start': 0, 'end': 10, 'bias': 0.1, 'step': 1}
+    bias_attack = Attack('replay', params, max_index)
     quadrotor = Quadrotor('test', dt, max_index, None)
     for i in range(0, max_index + 1):
         assert quadrotor.cur_index == i
         quadrotor.update_current_ref(ref[i])
         # attack here
-        quadrotor.evolve()
+        u = bias_attack.launch(quadrotor.cur_u, quadrotor.cur_index, quadrotor.inputs)
+        quadrotor.evolve(u=u)
     # print results
     import matplotlib.pyplot as plt
 
     t_arr = np.linspace(0, 10, max_index + 1)
     ref = [x[0] for x in quadrotor.refs[:max_index + 1]]
     y_arr = [x[5] for x in quadrotor.outputs[:max_index + 1]]
-
     plt.plot(t_arr, y_arr, t_arr, ref)
+    plt.savefig('./figs/linear/quadrotor.png')
     plt.show()

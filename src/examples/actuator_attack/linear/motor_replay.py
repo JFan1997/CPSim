@@ -91,7 +91,7 @@ if __name__ == "__main__":
     # ip = MotorSpeed('test', dt, max_index, noise)
     from cpsim import Attack
     params={'start': 0, 'end': 10, 'bias': 0.1, 'step': 1}
-    delay_attack = Attack('replay', params, 500)
+    bias_attack = Attack('replay', params, 500)
     ip = MotorSpeed('test', dt, max_index, noise)
 
 
@@ -99,7 +99,7 @@ if __name__ == "__main__":
         assert ip.cur_index == i
 
         ip.update_current_ref(ref[i])
-        u = delay_attack.launch(ip.cur_u, ip.cur_index, ip.inputs)
+        u = bias_attack.launch(ip.cur_u, ip.cur_index, ip.inputs)
         ip.evolve(u=u)
     # print results
     import matplotlib.pyplot as plt

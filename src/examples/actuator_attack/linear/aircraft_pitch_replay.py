@@ -70,7 +70,9 @@ class AircraftPitch(Simulator):
 
 
 if __name__ == "__main__":
+    from cpsim import Attack
     max_index = 1500
+    replay_num = 1500
     dt = 0.02
     ref = [np.array([0.2])] * 1501
     noise = {
@@ -79,21 +81,26 @@ if __name__ == "__main__":
             'param': {'C': np.eye(3) * 0.00001}
         }
     }
+    params={'start': 0, 'end': 10, 'bias': 0.1, 'step': 1}
+    bias_attack = Attack('replay', params, replay_num)
     aircraft_pitch = AircraftPitch('test', dt, max_index, noise)
     for i in range(0, max_index + 1):
         assert aircraft_pitch.cur_index == i
         aircraft_pitch.update_current_ref(ref[i])
         # attack here
-        aircraft_pitch.evolve()
+        u = bias_attack.launch(aircraft_pitch.cur_u, aircraft_pitch.cur_index, aircraft_pitch.inputs)
+        aircraft_pitch.evolve(u)
     # print results
     import matplotlib.pyplot as plt
 
     t_arr = np.linspace(0, 10, max_index + 1)
     ref = [x[0] for x in aircraft_pitch.refs[:max_index + 1]]
     y_arr = [x[0] for x in aircraft_pitch.outputs[:max_index + 1]]
-
     plt.plot(t_arr, y_arr, t_arr, ref)
+    plt.savefig(f'./figs/linear/aircraft.png')
     plt.show()
 
     u_arr = [x[0] for x in aircraft_pitch.inputs[:max_index + 1]]
     plt.plot(t_arr, u_arr)
+    plt.savefig(f'./figs/linear/aircraft-force.png')
+    plt.show()
