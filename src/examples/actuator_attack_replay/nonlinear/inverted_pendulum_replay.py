@@ -113,10 +113,10 @@ if __name__ == "__main__":
     dt = 0.02
     ref = [np.array([1, 0, np.pi, 0])] * (max_index+1)
     # bias attack example
-    from cpsim import Attack
+    from cpsim.actuator_attack import ActuatorAttack
     # bias = np.array([-1, 0, 0, 0])
     params={'start': 0, 'end': max_index, 'bias': 0.5, 'step': 1}
-    bias_attack = Attack('replay', params, 80)
+    bias_attack = ActuatorAttack('replay', params, 80)
     ip = InvertedPendulum('test', dt, max_index)
     for i in range(0, max_index + 1):
         assert ip.cur_index == i

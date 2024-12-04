@@ -151,20 +151,20 @@ class CSTR(Simulator):
 
 
 if __name__ == "__main__":
-    from cpsim import Attack
+    from cpsim.actuator_attack import ActuatorAttack
     max_index = 1000
     replay_num = 100
     dt = 0.02
     ref = [np.array([0, 300])] * (max_index + 1)
-    # noise = {
-    #     'process': {
-    #         'type': 'box_uniform',
-    #         'param': {'lo': np.array([-0.000001, -0.001]), 'up': np.array([0.001, 0.001])}
-    #     }
-    # }
+    noise = {
+        'process': {
+            'type': 'box_uniform',
+            'param': {'lo': np.array([-0.000001, -0.001]), 'up': np.array([0.001, 0.001])}
+        }
+    }
     noise = None
     params={'start': 0, 'end': 1, 'bias': 100, 'step': 1}
-    bias_attack = Attack('replay', params, replay_num)
+    bias_attack = ActuatorAttack('replay', params, replay_num)
     cstr_model = CSTR('test', dt, max_index, noise)
     for i in range(0, max_index + 1):
         assert cstr_model.cur_index == i

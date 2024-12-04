@@ -193,11 +193,11 @@ if __name__ == "__main__":
     # reference value
     ref = [np.array([0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0])] * (max_index + 1)
     # bias attack example
-    from cpsim import Attack
+    from cpsim.actuator_attack import ActuatorAttack
 
     # bias = np.array([0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0.2, 0.1])
     params={'start': 0, 'end': 1, 'bias': 100, 'step': 1}
-    bias_attack = Attack('replay', params, replay_num)
+    bias_attack = ActuatorAttack('replay', params, replay_num)
     ip = quadrotor('test', dt, max_index)
     for i in range(0, max_index + 1):
         assert ip.cur_index == i

@@ -255,10 +255,10 @@ if __name__ == "__main__":
     ref = [np.array([0, 0, heading_circle(deg2rad(90)), kn2ms(1), 0,0,0,0])] * (max_index+1)
     # ref = [np.array([0, 0, 45, 1, 0,0,0,0])] * (max_index+1)
     # bias attack example
-    from cpsim import Attack
+    from cpsim.actuator_attack import ActuatorAttack
     bias = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     params={'start': 0, 'end': 1, 'bias': 100, 'step': 1}
-    bias_attack = Attack('replay', params, replay_num)
+    bias_attack = ActuatorAttack('replay', params, replay_num)
     ip = VESSEL('test', dt, max_index)
     for i in range(0, max_index + 1):
         assert ip.cur_index == i

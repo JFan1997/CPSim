@@ -89,9 +89,9 @@ if __name__ == "__main__":
         }
     }
     # ip = MotorSpeed('test', dt, max_index, noise)
-    from cpsim import Attack
+    from cpsim.actuator_attack import ActuatorAttack
     params={'start': 0, 'end': 10, 'bias': 0.1, 'step': 1}
-    bias_attack = Attack('replay', params, 500)
+    bias_attack = ActuatorAttack('replay', params, 500)
     ip = MotorSpeed('test', dt, max_index, noise)
 
 

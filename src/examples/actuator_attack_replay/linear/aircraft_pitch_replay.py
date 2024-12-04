@@ -1,26 +1,24 @@
+#Ref: https://ctms.engin.umich.edu/CTMS/index.php?example=AircraftPitch&section=ControlPID
 import numpy as np
 
 from cpsim import Simulator
 from cpsim.controllers.PID import PID
 
 # system dynamics
-R = 10000
-L = 0.5
-C = 0.0001
-
-A = [[0, 1 / C], [-1 / L, -R / L]]
-B = [[0], [1 / L]]
-C = [[1, 0]]
+A = [[-0.313, 56.7, 0],
+     [-0.0139, -0.426, 0],
+     [0, 56.7, 0]]
+B = [[0.232], [0.0203], [0]]
+C = [[0, 0, 1]]
 D = [[0]]
 
-x_0 = np.array([0.0, 0.0])
+x_0 = np.array([0.0, 0.0, 0.0])
 
 # utils parameters
-KP = 5
-KI = 5
-KD = 0
-control_limit = {'lo': [-15], 'up': [15]}
-
+KP = 1.13
+KI = 0.0253
+KD = 0.0
+control_limit = {'lo': [-20], 'up': [20]}
 
 class Controller:
     def __init__(self, dt):
@@ -44,7 +42,19 @@ class Controller:
         self.pid.clear(current_time=-self.dt)
 
 
-class RlcCircuit(Simulator):
+class AircraftPitch(Simulator):
+    """
+      States: (3,)
+          x[0]: Angle of attack
+          x[1]: Pitch rate
+          x[2]: Pitch angle
+      Control Input: (1,)
+          u[0]: the elevator deflection angle
+      Output:  (1,)
+          y[0]: the pitch angle of the aircraft
+          Output Feedback
+      Controller: PID
+      """
     def __init__(self, name, dt, max_index, noise=None):
         super().__init__('Aircraft Pitch ' + name, dt, max_index)
         self.linear(A, B, C)
@@ -60,40 +70,37 @@ class RlcCircuit(Simulator):
 
 
 if __name__ == "__main__":
-    max_index = 500
+    from cpsim.actuator_attack import ActuatorAttack
+    max_index = 1500
+    replay_num = 1500
     dt = 0.02
-    ref = [np.array([2])] * 200 + [np.array([3])] * 200 + [np.array([2])] * 101
-
+    ref = [np.array([0.2])] * 1501
     noise = {
         'process': {
             'type': 'white',
-            'param': {'C': np.eye(2) * 0.01}
+            'param': {'C': np.eye(3) * 0.00001}
         }
     }
-    rlc_circuit = RlcCircuit('test', dt, max_index, noise)
-
-    from cpsim import Attack
-
     params={'start': 0, 'end': 10, 'bias': 0.1, 'step': 1}
-    bias_attack = Attack('replay', params, max_index)
-    ip = RlcCircuit('test', dt, max_index, noise)
-    for i in range(0, max_index):
-        assert rlc_circuit.cur_index == i
-        rlc_circuit.update_current_ref(ref[i])
+    bias_attack = ActuatorAttack('replay', params, replay_num)
+    aircraft_pitch = AircraftPitch('test', dt, max_index, noise)
+    for i in range(0, max_index + 1):
+        assert aircraft_pitch.cur_index == i
+        aircraft_pitch.update_current_ref(ref[i])
         # attack here
-        # print("og:",rlc_circuit.cur_feedback)
-        u = bias_attack.launch(rlc_circuit.cur_u, rlc_circuit.cur_index, rlc_circuit.inputs)
-        # rlc_circuit.cur_feedback = bias_vector
-        # print("bias:",bias_vector)
-        rlc_circuit.evolve(u=u)
+        u = bias_attack.launch(aircraft_pitch.cur_u, aircraft_pitch.cur_index, aircraft_pitch.inputs)
+        aircraft_pitch.evolve(u)
     # print results
     import matplotlib.pyplot as plt
 
     t_arr = np.linspace(0, 10, max_index + 1)
-    ref = [x[0] for x in rlc_circuit.refs[:max_index + 1]]
-    y_arr = [x[0] for x in rlc_circuit.outputs[:max_index + 1]]
-
-    plt.ylim(-.1, 3.1)
+    ref = [x[0] for x in aircraft_pitch.refs[:max_index + 1]]
+    y_arr = [x[0] for x in aircraft_pitch.outputs[:max_index + 1]]
     plt.plot(t_arr, y_arr, t_arr, ref)
-    plt.savefig('./figs/linear/RLC-circuit.png')
+    plt.savefig(f'./figs/linear/aircraft.png')
+    plt.show()
+
+    u_arr = [x[0] for x in aircraft_pitch.inputs[:max_index + 1]]
+    plt.plot(t_arr, u_arr)
+    plt.savefig(f'./figs/linear/aircraft-force.png')
     plt.show()
