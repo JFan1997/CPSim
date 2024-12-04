@@ -6,12 +6,12 @@ from cpsim import Simulator
 from cpsim.controllers.PID import PID
 
 # system dynamics
-J = 0.01   # moment of inertia of the rotor
-b = 0.1    # motor viscous friction constant
+J = 0.01  # moment of inertia of the rotor
+b = 0.1  # motor viscous friction constant
 Ke = 0.01  # electromotive force constant
 Kt = 0.01  # motor torque constant
-R = 1      # electric resistance
-L = 0.5    # electric inductance
+R = 1  # electric resistance
+L = 0.5  # electric inductance
 
 A = [[-b / J, Kt / J], [-Ke / L, -R / L]]
 B = [[0], [1 / L]]
@@ -28,6 +28,24 @@ control_limit = {
     'lo': np.array([0]),
     'up': np.array([60])
 }
+
+
+def envolve_sim(sim, ref, max_index, attack=False):
+    if attack:
+        for i in range(0, max_index + 1):
+            assert sim.cur_index == i
+            sim.update_current_ref(ref[i])
+            u = delay_attack.launch(sim.cur_u, sim.cur_index, sim.inputs)
+            sim.evolve(u=u)
+        # print results
+    else:
+        for i in range(0, max_index + 1):
+            assert sim.cur_index == i
+            sim.update_current_ref(ref[i])
+            sim.evolve()
+
+def plot_figure(sim, max_index, attack=False):
+    pass
 
 
 class Controller:
@@ -64,6 +82,7 @@ class MotorSpeed(Simulator):
                 Output Feedback
             Controller: PID
             """
+
     def __init__(self, name, dt, max_index, noise=None):
         super().__init__('Motor Speed ' + name, dt, max_index)
         self.linear(A, B, C)
@@ -88,25 +107,54 @@ if __name__ == "__main__":
             'param': {'C': np.eye(2) * 0.1}
         }
     }
-    motor_speed = MotorSpeed('test', dt, max_index, noise)
-    for i in range(0, max_index + 1):
-        assert motor_speed.cur_index == i
-        motor_speed.update_current_ref(ref[i])
-        # attack here
-        motor_speed.evolve()
+
+    from cpsim.actuator_attack import ActuatorAttack
+
+    delay_attack = ActuatorAttack('delay', 10, 300)
+    sim = MotorSpeed('test', dt, max_index, noise)
+
     # print results
+
     import matplotlib.pyplot as plt
 
-    # reference value
     t_arr = np.linspace(0, 10, max_index + 1)
-    ref = [x[0] for x in motor_speed.refs[:max_index + 1]]
-    y_arr = [x[0] for x in motor_speed.outputs[:max_index + 1]]
+    ref = [x[0] for x in sim.refs[:max_index + 1]]
+    y_arr = [x[0] for x in sim.outputs[:max_index + 1]]
 
-    plt.plot(t_arr, y_arr, t_arr, ref)
-    plt.savefig('actuator-motor-state.png')
+    # figure 1 plot output and reference
+    # 绘制输出值和参考值
+    plt.figure()
+    plt.plot(t_arr, y_arr, label="Output")
+    plt.plot(t_arr, ref, label="Reference")
+
+    # 在第300个步长添加标记
+    step_index = 300
+    plt.axvline(x=t_arr[step_index], color='red', linestyle='--', label=f"Step {step_index}")
+    plt.scatter(t_arr[step_index], y_arr[step_index], color='red', label="Marked Point")
+
+    # 图例和标题
+    plt.legend()
+    plt.title("Output and Reference with Step Marked")
+    plt.xlabel("Time")
+    plt.ylabel("Value")
+    plt.grid()
+    plt.savefig('../results/linear/motor/state_{}.png'.format('no_attack' if not attack else 'attack'))
     plt.show()
-    # control signal
-    u_arr = [x[0] for x in motor_speed.inputs[:max_index + 1]]
-    plt.plot(t_arr, u_arr)
-    plt.savefig('actuator-motor-input.png')
+
+    # figure 2 plot input
+    u_arr = [x[0] for x in sim.inputs[:max_index + 1]]
+    plt.figure()
+    plt.plot(t_arr, u_arr, label="Input")
+
+    # 在第300个步长添加标记
+    plt.axvline(x=t_arr[step_index], color='red', linestyle='--', label=f"Step {step_index}")
+    plt.scatter(t_arr[step_index], u_arr[step_index], color='red', label="Marked Point")
+
+    # 图例和标题
+    plt.legend()
+    plt.title("Input with Step Marked")
+    plt.xlabel("Time")
+    plt.ylabel("Value")
+    plt.grid()
+    plt.savefig('../results/linear/motor/input_{}.png'.format('no_attack' if not attack else 'attack'))
     plt.show()
