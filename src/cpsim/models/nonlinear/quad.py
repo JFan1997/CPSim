@@ -209,7 +209,6 @@ if __name__ == "__main__":
     u_arr = [x[0] for x in ip.inputs[:max_index + 1]]
 
     import matplotlib.pyplot as plt
-    import numpy as np
 
     # 第一个图
     fig1, ax1 = plt.subplots()

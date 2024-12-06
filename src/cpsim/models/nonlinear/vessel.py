@@ -270,25 +270,33 @@ if __name__ == "__main__":
 
     fig, ax = plt.subplots(6, 1)
     ax1, ax2, ax3, ax4, ax5, ax6 = ax
+
     t_arr = np.linspace(0, 5, max_index + 1)
+
     ref1 = [x[3] for x in ip.refs[:max_index + 1]]
     y1_arr = [x[3] for x in ip.outputs[:max_index + 1]]
     ax1.set_title('Speed')
     ax1.plot(t_arr, y1_arr, t_arr, ref1)
+
     ref2 = [x[2] for x in ip.refs[:max_index + 1]]
     y2_arr = [x[2] for x in ip.outputs[:max_index + 1]]
     ax2.set_title('Yaw')
     ax2.plot(t_arr, y2_arr, t_arr, ref2)
+
     y3_arr = [x[1] for x in ip.outputs[:max_index + 1]]
     ax3.set_title('East')
     ax3.plot(t_arr, y3_arr)
+
     y4_arr = [x[0] for x in ip.outputs[:max_index + 1]]
     ax4.set_title('Position')
     ax4.plot(y3_arr, y4_arr)
+
     y5_arr = [x[1] for x in ip.inputs[:max_index + 1]]
     ax5.set_title('Inputs')
     ax5.plot(t_arr, y5_arr)
+
     y6_arr = [x[0] for x in ip.inputs[:max_index + 1]]
     ax6.set_title('Inputs')
     ax6.plot(t_arr, y6_arr)
+
     plt.show()

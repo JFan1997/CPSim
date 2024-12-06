@@ -23,16 +23,13 @@ class ActuatorAttack:
 
     def launch(self, cur_data, cur_index, history_intact_data):
         self.cur_index = cur_index
+
         if cur_index < self.start_index or cur_index > self.end_index or self.disabled:
             return cur_data
         if self.cat == 'bias':
-            # param is the bias on each element
-            # self.simulator.evolve()
-            u = self.simulator.controller.update(self.simulator.cur_ref, self.simulator.cur_feedback,
-                                                 self.simulator.dt * self.simulator.cur_index)
-            print('this is action',u)
-            return u + self.param
-            # return cur_control_signal + self.param
+            # param is the bias on cur_control_signal
+            return cur_data + self.param
+
         if self.cat == 'delay':
             # param is the number of delay steps
             if self.cur_index - self.start_index > self.param:
