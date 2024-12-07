@@ -186,6 +186,13 @@ class quadrotor(Simulator):
         self.sim_init(settings)
 
 
+
+    #
+    # t_arr = np.linspace(0, 3, max_index + 1)
+    # ref2 = [x[-4] for x in ip.refs[:max_index + 1]]
+    # y2_arr = [x[-4] for x in ip.outputs[:max_index + 1]]
+    # u_arr = [x[0] for x in ip.inputs[:max_index + 1]]
+
 if __name__ == "__main__":
     max_index = 3000
     dt = 0.01
@@ -194,44 +201,65 @@ if __name__ == "__main__":
     # bias attack example
     from cpsim.actuator_attack import ActuatorAttack
 
-    ip = quadrotor('test', dt, max_index)
-    delay_attack = ActuatorAttack('delay', 10, 300)
+    start_index = 200
+    delay_attack = ActuatorAttack('delay', 10, start_index)
+    attack = False
+    sim = quadrotor('test', dt, max_index)
     for i in range(0, max_index + 1):
-        assert ip.cur_index == i
-        ip.update_current_ref(ref[i])
-        u = delay_attack.launch(ip.cur_u, ip.cur_index, ip.inputs)
-        ip.evolve(u=u)
-    t_arr = np.linspace(0, 3, max_index + 1)
-    ref2 = [x[-4] for x in ip.refs[:max_index + 1]]
-    y2_arr = [x[-4] for x in ip.outputs[:max_index + 1]]
-    u_arr = [x[0] for x in ip.inputs[:max_index + 1]]
+        assert sim.cur_index == i
+        sim.update_current_ref(ref[i])
+        if attack:
+            u = delay_attack.launch(sim.cur_u, sim.cur_index, sim.inputs)
+            print('this is u', u)
+            sim.evolve(u=u)
+        else:
+            sim.evolve()
+
     import matplotlib.pyplot as plt
-    import numpy as np
 
-    step = 300
-    t_step = t_arr[step]
-    u_step = u_arr[step]
-    y2_step = y2_arr[step]
-    ref2_step = ref2[step]
-    fig1, ax1 = plt.subplots()
-    ax1.set_title('Altitude')
-    ax1.plot(t_arr, y2_arr, label='y2_arr')
-    ax1.plot(t_arr, ref2, label='ref2')
+    # t_arr = np.linspace(0, 10, max_index + 1)
+    step_arr = np.arange(0, max_index + 1)
+    ref = [x[-4] for x in sim.refs[:max_index + 1]]
+    y_arr = [x[-4] for x in sim.outputs[:max_index + 1]]
 
-    ax1.scatter(t_step, y2_step, color='red', label=f'Step {step}')
-    ax1.text(t_step, y2_step, f'({t_step}, {y2_step:.2f})', fontsize=9, color='red', ha='left')
+    # figure 1 plot output and reference
+    # 绘制输出值和参考值
+    plt.figure()
+    plt.plot(step_arr, y_arr, label="Output")
+    plt.plot(step_arr, ref, label="Reference")
 
-    ax1.scatter(t_step, ref2_step, color='green', label=f'Step {step}')
-    ax1.text(t_step, ref2_step, f'({t_step}, {ref2_step:.2f})', fontsize=9, color='green', ha='left')
-    ax1.legend()
-    plt.savefig('quadrotor-altitude-delay.png')
+    # 在第300个步长添加标记
+
+    plt.axvline(x=start_index, color='red', linestyle='--', label=f"Step {start_index}")
+    plt.scatter(start_index, y_arr[start_index], color='red', label="Marked Point")
+
+    # 图例和标题
+    plt.legend()
+    plt.title("Output and Reference with Step Marked")
+    plt.xlabel("Time")
+    plt.ylabel("Value")
+    plt.grid()
+    plt.savefig(
+        '/Users/fjl2401/CPSim/src/examples/actuator_delay_attack/results/nonlinear/quadrotor/state_{}.png'.format(
+            'no_attack' if not attack else 'attack'))
     plt.show()
 
-    fig2, ax2 = plt.subplots()
-    ax2.set_title('u-force')
-    ax2.plot(t_arr, u_arr, label='u_arr')
-    ax2.scatter(t_step, u_step, color='red', label=f'Step {step}')
-    ax2.text(t_step, u_step, f'({t_step}, {u_step:.2f})', fontsize=9, color='red', ha='left')
-    ax2.legend()
-    plt.savefig('quadrotor-uforce-delay.png')
+    # figure 2 plot input
+    u_arr = [x[0] for x in sim.inputs[:max_index + 1]]
+    plt.figure()
+    plt.plot(step_arr, u_arr, label="Input")
+
+    # 在第300个步长添加标记
+    plt.axvline(x=start_index, color='red', linestyle='--', label=f"Step {start_index}")
+    plt.scatter(start_index, u_arr[start_index], color='red', label="Marked Point")
+
+    # 图例和标题
+    plt.legend()
+    plt.title("Input with Step Marked")
+    plt.xlabel("Time")
+    plt.ylabel("Value")
+    plt.grid()
+    plt.savefig(
+        '/Users/fjl2401/CPSim/src/examples/actuator_delay_attack/results/nonlinear/quadrotor/input_{}.png'.format(
+            'no_attack' if not attack else 'attack'))
     plt.show()

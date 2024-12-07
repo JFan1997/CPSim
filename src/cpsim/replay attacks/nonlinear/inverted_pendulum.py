@@ -130,7 +130,7 @@ if __name__ == "__main__":
         assert ip.cur_index == i
         ip.update_current_ref(ref[i])
         # attack here
-        ip.cur_feedback = bias_attack.launch(ip.cur_feedback, ip.cur_index, ip.states)
+        # ip.cur_feedback = bias_attack.launch(ip.cur_feedback, ip.cur_index, ip.states)
         ip.evolve()
     # print results
     import matplotlib.pyplot as plt

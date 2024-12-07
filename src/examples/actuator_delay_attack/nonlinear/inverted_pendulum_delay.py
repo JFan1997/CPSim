@@ -1,6 +1,7 @@
 # Ref: Data-Driven Science and Engineering: Machine Learning, Dynamical Systems, and Control (Session 8.7, Page 300)
 
 import numpy as np
+
 from cpsim import Simulator
 from cpsim.actuator_attack import ActuatorAttack
 from cpsim.controllers.LQR import LQR
@@ -116,47 +117,100 @@ class InvertedPendulum(Simulator):
             settings['noise'] = noise
         self.sim_init(settings)
 
-
+    # ip = InvertedPendulum('test', dt, max_index)
+    # for i in range(0, max_index + 1):
+    #     assert ip.cur_index == i
+    #     ip.update_current_ref(ref[i])
+    #     # attack here
+    #     # ip.cur_feedback = bias_attack.launch(ip.cur_feedback, ip.cur_index, ip.states)
+    #     ip.evolve()
 if __name__ == "__main__":
     max_index = 800
     dt = 0.02
     ref = [np.array([1, 0, np.pi, 0])] * (max_index + 1)
     # bias attack example
-    from cpsim import Attack
-
-    bias = np.array([-1, 0, 0, 0])
-    bias_attack = Attack('bias', bias, 300)
     sim = InvertedPendulum('test', dt, max_index)
-    # for i in range(0, max_index + 1):
-    #     assert sim.cur_index == i
-    #     sim.update_current_ref(ref[i])
-    #     # attack here
-    #     sim.cur_feedback = bias_attack.launch(sim.cur_feedback, sim.cur_index, sim.states)
-    #     sim.evolve()
-
-    delay_attack = ActuatorAttack('delay', 10, 300)
+    attack = False
+    start_index = 150
+    delay_attack = ActuatorAttack('delay', 10, start_index)
     for i in range(0, max_index + 1):
         assert sim.cur_index == i
         sim.update_current_ref(ref[i])
-        u = delay_attack.launch(sim.cur_u, sim.cur_index, sim.inputs)
-        sim.evolve(u=u)
+        if attack:
+            u = delay_attack.launch(sim.cur_u, sim.cur_index, sim.inputs)
+            print('this is u', u)
+            sim.evolve(u=u)
+        else:
+            sim.evolve()
 
     # print results
     import matplotlib.pyplot as plt
 
-    fig, ax = plt.subplots(3, 1)
-    ax1, ax2, ax3 = ax
-    t_arr = np.linspace(0, 10, max_index + 1)
-    ref1 = [x[0] for x in sim.refs[:max_index + 1]]
-    y1_arr = [x[0] for x in sim.outputs[:max_index + 1]]
-    ax1.set_title('x0-location')
-    ax1.plot(t_arr, y1_arr, t_arr, ref1)
-    ref2 = [x[2] for x in sim.refs[:max_index + 1]]
-    y2_arr = [x[2] for x in sim.outputs[:max_index + 1]]
-    ax2.set_title('x2-angle')
-    ax2.plot(t_arr, y2_arr, t_arr, ref2)
-    u_arr = [x[0] for x in sim.inputs[:max_index + 1]]
-    ax3.set_title('u-force')
-    ax3.plot(t_arr, u_arr)
-    print(u_arr)
-    plt.show()
+
+
+
+
+step_arr = np.arange(0, max_index + 1)
+
+################################
+# Figure 1: x0-location
+################################
+ref1 = [x[0] for x in sim.refs[:max_index + 1]]
+y1_arr = [x[0] for x in sim.outputs[:max_index + 1]]
+
+plt.figure()
+plt.plot(step_arr, y1_arr, label="Output x0")
+plt.plot(step_arr, ref1, label="Reference x0")
+plt.axvline(x=start_index, color='red', linestyle='--', label=f"Step {start_index}")
+plt.scatter(start_index, y1_arr[start_index], color='red', label="Marked Point")
+plt.legend()
+plt.title("x0-location")
+plt.xlabel("Step")
+plt.ylabel("Value")
+plt.grid()
+plt.tight_layout()
+plt.savefig(
+    '/Users/fjl2401/CPSim/src/examples/actuator_delay_attack/results/nonlinear/Pendulum/x0_{}.png'.format(
+        'no_attack' if not attack else 'attack'))
+plt.show()
+
+################################
+# Figure 2: x2-angle
+################################
+ref2 = [x[2] for x in sim.refs[:max_index + 1]]
+y2_arr = [x[2] for x in sim.outputs[:max_index + 1]]
+
+plt.figure()
+plt.plot(step_arr, y2_arr, label="Output x2")
+plt.plot(step_arr, ref2, label="Reference x2")
+plt.axvline(x=start_index, color='red', linestyle='--', label=f"Step {start_index}")
+plt.scatter(start_index, y2_arr[start_index], color='red', label="Marked Point")
+plt.legend()
+plt.title("x2-angle")
+plt.xlabel("Step")
+plt.ylabel("Value")
+plt.grid()
+plt.tight_layout()
+plt.savefig(
+    '/Users/fjl2401/CPSim/src/examples/actuator_delay_attack/results/nonlinear/Pendulum/x2_{}.png'.format(
+        'no_attack' if not attack else 'attack'))
+plt.show()
+
+################################
+# Figure 3: u-force (input)
+################################
+u_arr = [x[0] for x in sim.inputs[:max_index + 1]]
+plt.figure()
+plt.plot(step_arr, u_arr, label="Input u")
+plt.axvline(x=start_index, color='red', linestyle='--', label=f"Step {start_index}")
+plt.scatter(start_index, u_arr[start_index], color='red', label="Marked Point")
+plt.legend()
+plt.title("u-force")
+plt.xlabel("Step")
+plt.ylabel("Value")
+plt.grid()
+plt.tight_layout()
+plt.savefig(
+    '/Users/fjl2401/CPSim/src/examples/actuator_delay_attack/results/nonlinear/Pendulum/u_{}.png'.format(
+        'no_attack' if not attack else 'attack'))
+plt.show()

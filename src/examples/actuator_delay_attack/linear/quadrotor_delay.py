@@ -131,19 +131,80 @@ if __name__ == "__main__":
             'param': {'C': np.eye(12) * 0.001}
         }
     }
+    attack = True
     sim = Quadrotor('test', dt, max_index, None)
-    delay_attack = ActuatorAttack('delay', 10, 300)
+    start_index = 300
+    delay_attack = ActuatorAttack('delay', 10, start_index)
     for i in range(0, max_index + 1):
         assert sim.cur_index == i
         sim.update_current_ref(ref[i])
-        u = delay_attack.launch(sim.cur_u, sim.cur_index, sim.inputs)
-        sim.evolve(u=u)
-    # print results
+        if attack:
+            u = delay_attack.launch(sim.cur_u, sim.cur_index, sim.inputs)
+            print('this is u', u)
+            sim.evolve(u=u)
+        else:
+            sim.evolve()
+
     import matplotlib.pyplot as plt
 
-    t_arr = np.linspace(0, 10, max_index + 1)
+    # t_arr = np.linspace(0, 10, max_index + 1)
+    step_arr = np.arange(0, max_index + 1)
     ref = [x[0] for x in sim.refs[:max_index + 1]]
     y_arr = [x[5] for x in sim.outputs[:max_index + 1]]
 
-    plt.plot(t_arr, y_arr, t_arr, ref)
+    # figure 1 plot output and reference
+    # 绘制输出值和参考值
+    plt.figure()
+    plt.plot(step_arr, y_arr, label="Output")
+    plt.plot(step_arr, ref, label="Reference")
+
+    # 在第300个步长添加标记
+
+    plt.axvline(x=start_index, color='red', linestyle='--', label=f"Step {start_index}")
+    plt.scatter(start_index, y_arr[start_index], color='red', label="Marked Point")
+
+    # 图例和标题
+    plt.legend()
+    plt.title("Output and Reference with Step Marked")
+    plt.xlabel("Time")
+    plt.ylabel("Value")
+    plt.grid()
+    plt.savefig('/Users/fjl2401/CPSim/src/examples/actuator_delay_attack/results/linear/quadrotor/state_{}.png'.format(
+        'no_attack' if not attack else 'attack'))
     plt.show()
+
+    # figure 2 plot input
+    u_arr = [x[0] for x in sim.inputs[:max_index + 1]]
+    plt.figure()
+    plt.plot(step_arr, u_arr, label="Input")
+
+    # 在第300个步长添加标记
+    plt.axvline(x=start_index, color='red', linestyle='--', label=f"Step {start_index}")
+    plt.scatter(start_index, u_arr[start_index], color='red', label="Marked Point")
+
+    # 图例和标题
+    plt.legend()
+    plt.title("Input with Step Marked")
+    plt.xlabel("Time")
+    plt.ylabel("Value")
+    plt.grid()
+    plt.savefig('/Users/fjl2401/CPSim/src/examples/actuator_delay_attack/results/linear/quadrotor/input_{}.png'.format(
+        'no_attack' if not attack else 'attack'))
+    plt.show()
+
+    # t_arr = np.linspace(0, 10, max_index + 1)
+    # ref = [x[0] for x in quadrotor.refs[:max_index + 1]]
+    # y_arr = [x[5] for x in quadrotor.outputs[:max_index + 1]]
+
+    # plt.plot(t_arr, y_arr, t_arr, ref)
+    # plt.show()
+
+    # print results
+    # import matplotlib.pyplot as plt
+    #
+    # t_arr = np.linspace(0, 10, max_index + 1)
+    # ref = [x[0] for x in sim.refs[:max_index + 1]]
+    # y_arr = [x[5] for x in sim.outputs[:max_index + 1]]
+    #
+    # plt.plot(t_arr, y_arr, t_arr, ref)
+    # plt.show()

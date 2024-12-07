@@ -220,8 +220,8 @@ if __name__ == "__main__":
     ax1.plot(t_arr, y2_arr, label='y2_arr')
     ax1.plot(t_arr, ref2, label='ref2')
     ax1.legend()
-    plt.savefig(f'./figs/nonlinear/quadrotor-altitude-{replay_num}.png')
-    # plt.show()
+    # plt.savefig(f'./figs/nonlinear/quadrotor-altitude-{replay_num}.png')
+    plt.show()
 
     # 第二个图
     fig2, ax2 = plt.subplots()
@@ -229,5 +229,5 @@ if __name__ == "__main__":
     ax2.plot(t_arr, u_arr, label='u_arr')
     ax2.axhline(9.80656, color='red', label='gravity')
     ax2.legend()
-    plt.savefig(f'./figs/nonlinear/quadrotor-uforce-{replay_num}.png')
+    # plt.savefig(f'./figs/nonlinear/quadrotor-uforce-{replay_num}.png')
     plt.show()
