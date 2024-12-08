@@ -23,8 +23,8 @@ class ActuatorAttack:
 
     def launch(self, cur_data, cur_index, history_intact_data):
         self.cur_index = cur_index
-        # if cur_index < self.start_index or cur_index > self.end_index or self.disabled:
-        #     return cur_data
+        if cur_index < self.start_index or cur_index > self.end_index or self.disabled:
+            return cur_data
         if self.cat == 'bias':
             # param is the bias on cur_control_signal
             return cur_data + self.param
