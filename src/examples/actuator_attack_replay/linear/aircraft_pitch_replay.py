@@ -72,7 +72,6 @@ class AircraftPitch(Simulator):
 if __name__ == "__main__":
     from cpsim.actuator_attack import ActuatorAttack
     max_index = 1500
-    replay_num = 1500
     dt = 0.02
     ref = [np.array([0.2])] * 1501
     noise = {
@@ -81,26 +80,50 @@ if __name__ == "__main__":
             'param': {'C': np.eye(3) * 0.00001}
         }
     }
-    params={'start': 0, 'end': 10, 'bias': 0.1, 'step': 1}
-    bias_attack = ActuatorAttack('replay', params, replay_num)
+    params={'start': 1000, 'end': 1500, 'bias': 0.1, 'step': 1}
+
     aircraft_pitch = AircraftPitch('test', dt, max_index, noise)
+
+    bias_attack = ActuatorAttack('replay', params, max_index)
+
     for i in range(0, max_index + 1):
-        assert aircraft_pitch.cur_index == i
-        aircraft_pitch.update_current_ref(ref[i])
-        # attack here
-        u = bias_attack.launch(aircraft_pitch.cur_u, aircraft_pitch.cur_index, aircraft_pitch.inputs)
-        aircraft_pitch.evolve(u)
+        if i > params['start'] and i < params['end']:
+            assert aircraft_pitch.cur_index == i
+            aircraft_pitch.update_current_ref(ref[i])
+            # attack here
+            u = bias_attack.launch(aircraft_pitch.cur_u, aircraft_pitch.cur_index, aircraft_pitch.inputs)
+            aircraft_pitch.evolve(u=u)
+        else:
+            assert aircraft_pitch.cur_index == i
+            aircraft_pitch.update_current_ref(ref[i])
+            # attack here
+            aircraft_pitch.evolve()
+
+
     # print results
     import matplotlib.pyplot as plt
 
     t_arr = np.linspace(0, 10, max_index + 1)
     ref = [x[0] for x in aircraft_pitch.refs[:max_index + 1]]
     y_arr = [x[0] for x in aircraft_pitch.outputs[:max_index + 1]]
-    plt.plot(t_arr, y_arr, t_arr, ref)
+    plt.figure()
+    plt.plot(t_arr, y_arr, label="Output")
+    plt.plot(t_arr, ref, label="Reference", linestyle='dashed')
+    plt.legend()
+    plt.xlabel('Time')
+    plt.ylabel('Value')
+    plt.title('Output and Reference with Step Marked')
+    plt.grid()
     plt.savefig(f'./figs/linear/aircraft.png')
     plt.show()
 
     u_arr = [x[0] for x in aircraft_pitch.inputs[:max_index + 1]]
-    plt.plot(t_arr, u_arr)
+    plt.figure()
+    plt.plot(t_arr, u_arr, label="Input")
+    plt.legend()
+    plt.xlabel('Time')
+    plt.ylabel('Value')
+    plt.title('Input with Step Marked')
+    plt.grid()
     plt.savefig(f'./figs/linear/aircraft-force.png')
     plt.show()

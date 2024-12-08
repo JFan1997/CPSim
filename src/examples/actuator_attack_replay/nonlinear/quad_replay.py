@@ -188,46 +188,80 @@ class quadrotor(Simulator):
 
 if __name__ == "__main__":
     max_index = 3000
-    replay_num = 3000
     dt = 0.01
-    # reference value
     ref = [np.array([0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0])] * (max_index + 1)
-    # bias attack example
     from cpsim.actuator_attack import ActuatorAttack
 
     # bias = np.array([0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0.2, 0.1])
-    params={'start': 0, 'end': 1, 'bias': 100, 'step': 1}
-    bias_attack = ActuatorAttack('replay', params, replay_num)
+    params={'start': 200, 'end': 600}
+
+    bias_attack = ActuatorAttack('replay', params, 3000)
+    
     ip = quadrotor('test', dt, max_index)
+    
+    attack = False
     for i in range(0, max_index + 1):
-        assert ip.cur_index == i
-        ip.update_current_ref(ref[i])
-        # attack here
-        ip.cur_feedback = bias_attack.launch(ip.cur_feedback, ip.cur_index, ip.states)
-        ip.evolve()
+        if (i > params['start'] and i < params['end']) and attack==True:
+            assert ip.cur_index == i
+            ip.update_current_ref(ref[i])
+            # attack here
+            u = bias_attack.launch(ip.cur_u, ip.cur_index, ip.inputs)
+            ip.evolve(u=u)
+        else:
+            assert ip.cur_index == i
+            ip.update_current_ref(ref[i])
+            # attack here
+            ip.evolve()
+
     # 定义数据
-    t_arr = np.linspace(0, 3, max_index + 1)
-    ref2 = [x[-4] for x in ip.refs[:max_index + 1]]
-    y2_arr = [x[-4] for x in ip.outputs[:max_index + 1]]
+    t_arr = np.linspace(0, 3000, max_index + 1)
+    ref = [x[-4] for x in ip.refs[:max_index + 1]]
+    y_arr = [x[-4] for x in ip.outputs[:max_index + 1]]
     u_arr = [x[0] for x in ip.inputs[:max_index + 1]]
 
     import matplotlib.pyplot as plt
     import numpy as np
 
     # 第一个图
-    fig1, ax1 = plt.subplots()
-    ax1.set_title(f'Altitude With Replay Attack Starting at {replay_num}')
-    ax1.plot(t_arr, y2_arr, label='y2_arr')
-    ax1.plot(t_arr, ref2, label='ref2')
-    ax1.legend()
-    plt.savefig(f'./figs/nonlinear/quadrotor-altitude-{replay_num}.png')
-    # plt.show()
+    plt.figure()
+    plt.plot(t_arr, y_arr, label="Output")
+    plt.plot(t_arr, ref, label="Reference", linestyle='dashed')
+    if attack:
+        plt.plot(t_arr[params['start']], y_arr[params['start']], 'o', label='Replay Start', color='red')
+        plt.plot(t_arr[params['end']], y_arr[params['end']], 'o', label='Replay End', color='orange')
+        plt.title(f'Quad Altitude with Replay Attack')
+    else:
+        plt.title(f'Quad Altitude')
+
+    plt.legend()
+    plt.xlabel('Time')
+    plt.ylabel('Value')
+    plt.grid()
+    if attack:
+        plt.savefig('./figs/nonlinear/quadrotor.png', dpi=800)
+    else:
+        plt.savefig('./figs/nonlinear/quadrotor (no attack).png', dpi=800)
+    plt.show()
+
+    # ----------------------------------------------------------------------------------------
 
     # 第二个图
-    fig2, ax2 = plt.subplots()
-    ax2.set_title(f'U-Force With Replay Attack Starting at {replay_num}')
-    ax2.plot(t_arr, u_arr, label='u_arr')
-    ax2.axhline(9.80656, color='red', label='gravity')
-    ax2.legend()
-    plt.savefig(f'./figs/nonlinear/quadrotor-uforce-{replay_num}.png')
+    plt.figure()
+    plt.plot(t_arr, u_arr, label='Input')
+    if attack:
+        plt.plot(t_arr[params['start']], u_arr[params['start']], 'o', label='Replay Start', color='red')
+        plt.plot(t_arr[params['end']], u_arr[params['end']], 'o', label='Replay End', color='orange')
+        plt.title(f'Quad u-force with Replay Attack')
+    else:
+        plt.title(f'Quad u-force')
+
+    plt.xlabel('Time')
+    plt.ylabel('Value')
+    plt.axhline(9.80656, color='red', label='gravity')
+    plt.grid()
+    plt.legend()
+    if attack:
+        plt.savefig('./figs/nonlinear/quadrotor-uforce.png', dpi=800)
+    else:
+        plt.savefig('./figs/nonlinear/quadrotor-uforce (no attack).png', dpi=800)
     plt.show()
