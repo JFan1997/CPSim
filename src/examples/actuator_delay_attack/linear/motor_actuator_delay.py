@@ -44,9 +44,6 @@ def envolve_sim(sim, ref, max_index, attack=False):
             sim.update_current_ref(ref[i])
             sim.evolve()
 
-def plot_figure(sim, max_index, attack=False):
-    pass
-
 
 class Controller:
     def __init__(self, dt):
@@ -110,27 +107,36 @@ if __name__ == "__main__":
 
     from cpsim.actuator_attack import ActuatorAttack
 
-    delay_attack = ActuatorAttack('delay', 10, 300)
     sim = MotorSpeed('test', dt, max_index, noise)
-
-    # print results
+    delay_attack = ActuatorAttack('delay', 10, 300, simulator=sim)
+    attack = True
+    for i in range(0, max_index + 1):
+        assert sim.cur_index == i
+        sim.update_current_ref(ref[i])
+        if attack:
+            u = delay_attack.launch(sim.cur_u, sim.cur_index, sim.inputs)
+            print('this is u', u)
+            sim.evolve(u)
+        else:
+            sim.evolve()
 
     import matplotlib.pyplot as plt
 
-    t_arr = np.linspace(0, 10, max_index + 1)
+    # t_arr = np.linspace(0, 10, max_index + 1)
+    step_arr = np.arange(0, max_index + 1)
     ref = [x[0] for x in sim.refs[:max_index + 1]]
     y_arr = [x[0] for x in sim.outputs[:max_index + 1]]
 
     # figure 1 plot output and reference
     # 绘制输出值和参考值
     plt.figure()
-    plt.plot(t_arr, y_arr, label="Output")
-    plt.plot(t_arr, ref, label="Reference")
+    plt.plot(step_arr, y_arr, label="Output")
+    plt.plot(step_arr, ref, label="Reference")
 
     # 在第300个步长添加标记
     step_index = 300
-    plt.axvline(x=t_arr[step_index], color='red', linestyle='--', label=f"Step {step_index}")
-    plt.scatter(t_arr[step_index], y_arr[step_index], color='red', label="Marked Point")
+    plt.axvline(x=step_index, color='red', linestyle='--', label=f"Step {step_index}")
+    plt.scatter(step_index, y_arr[step_index], color='red', label="Marked Point")
 
     # 图例和标题
     plt.legend()
@@ -138,17 +144,18 @@ if __name__ == "__main__":
     plt.xlabel("Time")
     plt.ylabel("Value")
     plt.grid()
-    plt.savefig('../results/linear/motor/state_{}.png'.format('no_attack' if not attack else 'attack'))
+    plt.savefig('/Users/fjl2401/CPSim/src/examples/actuator_delay_attack/results/linear/motor/state_{}.png'.format(
+        'no_attack' if not attack else 'attack'))
     plt.show()
 
     # figure 2 plot input
     u_arr = [x[0] for x in sim.inputs[:max_index + 1]]
     plt.figure()
-    plt.plot(t_arr, u_arr, label="Input")
+    plt.plot(step_arr, u_arr, label="Input")
 
     # 在第300个步长添加标记
-    plt.axvline(x=t_arr[step_index], color='red', linestyle='--', label=f"Step {step_index}")
-    plt.scatter(t_arr[step_index], u_arr[step_index], color='red', label="Marked Point")
+    plt.axvline(x=step_index, color='red', linestyle='--', label=f"Step {step_index}")
+    plt.scatter(step_index, u_arr[step_index], color='red', label="Marked Point")
 
     # 图例和标题
     plt.legend()
@@ -156,5 +163,6 @@ if __name__ == "__main__":
     plt.xlabel("Time")
     plt.ylabel("Value")
     plt.grid()
-    plt.savefig('../results/linear/motor/input_{}.png'.format('no_attack' if not attack else 'attack'))
+    plt.savefig('/Users/fjl2401/CPSim/src/examples/actuator_delay_attack/results/linear/motor/input_{}.png'.format(
+        'no_attack' if not attack else 'attack'))
     plt.show()

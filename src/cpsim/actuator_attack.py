@@ -23,21 +23,30 @@ class ActuatorAttack:
 
     def launch(self, cur_data, cur_index, history_intact_data):
         self.cur_index = cur_index
-
-        if cur_index < self.start_index or cur_index > self.end_index or self.disabled:
-            return cur_data
+        # if cur_index < self.start_index or cur_index > self.end_index or self.disabled:
+        #     return cur_data
         if self.cat == 'bias':
             # param is the bias on cur_control_signal
             return cur_data + self.param
 
         if self.cat == 'delay':
             # param is the number of delay steps
-            if self.cur_index - self.start_index > self.param:
-                print('delay attack used steps', self.cur_index - self.param, 'data of used steps',
-                      history_intact_data[self.cur_index - self.param])
-                return history_intact_data[self.cur_index - self.param]
-            else:
-                return history_intact_data[self.start_index - 1]
+            if self.cur_index - self.start_index >= self.param:
+                delayed_index = self.cur_index - self.param
+                if delayed_index < 0:
+                    # Handle the edge case: return start_index data or some default
+                    return history_intact_data[self.start_index]
+                else:
+                    return history_intact_data[delayed_index]
+            # if self.cur_index - self.start_index > self.param:
+            #     print('delay attack used steps', self.cur_index - self.param, 'data of used steps',
+            #           history_intact_data[self.cur_index - self.param])
+            #     return history_intact_data[self.cur_index - self.param]
+            # else:
+            #     return None
+            # for i in range(self.param):
+            #     self.simulator.evolve()
+            # return history_intact_data[self.start_index]
         if self.cat == 'replay':
             # replay interval param['start'] ~ param['end']
             delta_index = self.cur_index - self.start_index

@@ -186,80 +186,48 @@ class quadrotor(Simulator):
         self.sim_init(settings)
 
 
-
-    #
-    # t_arr = np.linspace(0, 3, max_index + 1)
-    # ref2 = [x[-4] for x in ip.refs[:max_index + 1]]
-    # y2_arr = [x[-4] for x in ip.outputs[:max_index + 1]]
-    # u_arr = [x[0] for x in ip.inputs[:max_index + 1]]
-
 if __name__ == "__main__":
     max_index = 3000
+    replay_num = 3000
     dt = 0.01
     # reference value
     ref = [np.array([0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0])] * (max_index + 1)
     # bias attack example
-    from cpsim.actuator_attack import ActuatorAttack
+    from cpsim import Attack
 
-    start_index = 200
-    delay_attack = ActuatorAttack('delay', 10, start_index)
-    attack = False
-    sim = quadrotor('test', dt, max_index)
+    # bias = np.array([0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0.2, 0.1])
+    params={'start': 0, 'end': 1, 'bias': 100, 'step': 1}
+    bias_attack = Attack('replay', params, replay_num)
+    ip = quadrotor('test', dt, max_index)
     for i in range(0, max_index + 1):
-        assert sim.cur_index == i
-        sim.update_current_ref(ref[i])
-        if attack:
-            u = delay_attack.launch(sim.cur_u, sim.cur_index, sim.inputs)
-            print('this is u', u)
-            sim.evolve(u=u)
-        else:
-            sim.evolve()
+        assert ip.cur_index == i
+        ip.update_current_ref(ref[i])
+        # attack here
+        ip.cur_feedback = bias_attack.launch(ip.cur_feedback, ip.cur_index, ip.states)
+        ip.evolve()
+    # 定义数据
+    t_arr = np.linspace(0, 3, max_index + 1)
+    ref2 = [x[-4] for x in ip.refs[:max_index + 1]]
+    y2_arr = [x[-4] for x in ip.outputs[:max_index + 1]]
+    u_arr = [x[0] for x in ip.inputs[:max_index + 1]]
 
     import matplotlib.pyplot as plt
+    import numpy as np
 
-    # t_arr = np.linspace(0, 10, max_index + 1)
-    step_arr = np.arange(0, max_index + 1)
-    ref = [x[-4] for x in sim.refs[:max_index + 1]]
-    y_arr = [x[-4] for x in sim.outputs[:max_index + 1]]
-
-    # figure 1 plot output and reference
-    # 绘制输出值和参考值
-    plt.figure()
-    plt.plot(step_arr, y_arr, label="Output")
-    plt.plot(step_arr, ref, label="Reference")
-
-    # 在第300个步长添加标记
-
-    plt.axvline(x=start_index, color='red', linestyle='--', label=f"Step {start_index}")
-    plt.scatter(start_index, y_arr[start_index], color='red', label="Marked Point")
-
-    # 图例和标题
-    plt.legend()
-    plt.title("Output and Reference with Step Marked")
-    plt.xlabel("Time")
-    plt.ylabel("Value")
-    plt.grid()
-    plt.savefig(
-        '/Users/fjl2401/CPSim/src/examples/actuator_delay_attack/results/nonlinear/quadrotor/state_{}.png'.format(
-            'no_attack' if not attack else 'attack'))
+    # 第一个图
+    fig1, ax1 = plt.subplots()
+    ax1.set_title(f'Altitude With Replay Attack Starting at {replay_num}')
+    ax1.plot(t_arr, y2_arr, label='y2_arr')
+    ax1.plot(t_arr, ref2, label='ref2')
+    ax1.legend()
+    # plt.savefig(f'./figs/nonlinear/quadrotor-altitude-{replay_num}.png')
     plt.show()
 
-    # figure 2 plot input
-    u_arr = [x[0] for x in sim.inputs[:max_index + 1]]
-    plt.figure()
-    plt.plot(step_arr, u_arr, label="Input")
-
-    # 在第300个步长添加标记
-    plt.axvline(x=start_index, color='red', linestyle='--', label=f"Step {start_index}")
-    plt.scatter(start_index, u_arr[start_index], color='red', label="Marked Point")
-
-    # 图例和标题
-    plt.legend()
-    plt.title("Input with Step Marked")
-    plt.xlabel("Time")
-    plt.ylabel("Value")
-    plt.grid()
-    plt.savefig(
-        '/Users/fjl2401/CPSim/src/examples/actuator_delay_attack/results/nonlinear/quadrotor/input_{}.png'.format(
-            'no_attack' if not attack else 'attack'))
+    # 第二个图
+    fig2, ax2 = plt.subplots()
+    ax2.set_title(f'U-Force With Replay Attack Starting at {replay_num}')
+    ax2.plot(t_arr, u_arr, label='u_arr')
+    ax2.axhline(9.80656, color='red', label='gravity')
+    ax2.legend()
+    # plt.savefig(f'./figs/nonlinear/quadrotor-uforce-{replay_num}.png')
     plt.show()
