@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> eccaf2c (resolve)
 from math import cos, sin, copysign, pi
 
 import numpy as np
@@ -300,6 +303,7 @@ if __name__ == "__main__":
     ax6.set_title('Inputs')
     ax6.plot(t_arr, y6_arr)
 
+<<<<<<< HEAD
 =======
 from math import cos, sin, copysign, pi
 
@@ -603,4 +607,6 @@ if __name__ == "__main__":
     ax6.plot(t_arr, y6_arr)
 
 >>>>>>> b500e2a (add commit)
+=======
+>>>>>>> eccaf2c (resolve)
     plt.show()

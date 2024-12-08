@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> eccaf2c (resolve)
 # Ref: Data-Driven Science and Engineering: Machine Learning, Dynamical Systems, and Control (Session 8.7, Page 300)
 
 import math
@@ -233,6 +236,7 @@ if __name__ == "__main__":
     plt.show()
 
     print('u_arr',u_arr)
+<<<<<<< HEAD
 =======
 # Ref: Data-Driven Science and Engineering: Machine Learning, Dynamical Systems, and Control (Session 8.7, Page 300)
 
@@ -469,3 +473,5 @@ if __name__ == "__main__":
 
     print('u_arr',u_arr)
 >>>>>>> b500e2a (add commit)
+=======
+>>>>>>> eccaf2c (resolve)
