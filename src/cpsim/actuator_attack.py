@@ -41,15 +41,6 @@ class ActuatorAttack:
                     return history_intact_data[self.start_index]
                 else:
                     return history_intact_data[delayed_index]
-            # if self.cur_index - self.start_index > self.param:
-            #     print('delay attack used steps', self.cur_index - self.param, 'data of used steps',
-            #           history_intact_data[self.cur_index - self.param])
-            #     return history_intact_data[self.cur_index - self.param]
-            # else:
-            #     return None
-            # for i in range(self.param):
-            #     self.simulator.evolve()
-            # return history_intact_data[self.start_index]
         if self.cat == 'replay':
             # replay interval param['start'] ~ param['end']
             delta_index = self.cur_index - self.start_index

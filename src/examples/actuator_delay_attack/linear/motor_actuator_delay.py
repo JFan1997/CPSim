@@ -109,7 +109,7 @@ if __name__ == "__main__":
 
     sim = MotorSpeed('test', dt, max_index, noise)
     delay_attack = ActuatorAttack('delay', 10, 300, simulator=sim)
-    attack = True
+    attack = False
     for i in range(0, max_index + 1):
         assert sim.cur_index == i
         sim.update_current_ref(ref[i])
