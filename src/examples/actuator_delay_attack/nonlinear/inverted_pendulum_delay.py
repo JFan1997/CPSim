@@ -166,7 +166,7 @@ if __name__ == "__main__":
     plt.grid()
     plt.tight_layout()
     plt.savefig(
-        '/Users/fjl2401/CPSim/src/examples/actuator_delay_attack/results/nonlinear/Pendulum/x0_{}.png'.format(
+        '../results/nonlinear/Pendulum/x0_{}.png'.format(
             'no_attack' if not attack else 'attack'))
     plt.show()
 
@@ -188,7 +188,7 @@ if __name__ == "__main__":
     plt.grid()
     plt.tight_layout()
     plt.savefig(
-        '/Users/fjl2401/CPSim/src/examples/actuator_delay_attack/results/nonlinear/Pendulum/x2_{}.png'.format(
+        '../results/nonlinear/Pendulum/x2_{}.png'.format(
             'no_attack' if not attack else 'attack'))
     plt.show()
 
@@ -207,6 +207,6 @@ if __name__ == "__main__":
     plt.grid()
     plt.tight_layout()
     plt.savefig(
-        '/Users/fjl2401/CPSim/src/examples/actuator_delay_attack/results/nonlinear/Pendulum/u_{}.png'.format(
+        '../results/nonlinear/Pendulum/u_{}.png'.format(
             'no_attack' if not attack else 'attack'))
     plt.show()

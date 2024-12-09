@@ -169,7 +169,7 @@ if __name__ == "__main__":
     plt.xlabel("Time")
     plt.ylabel("Value")
     plt.grid()
-    plt.savefig('/Users/fjl2401/CPSim/src/examples/actuator_delay_attack/results/linear/quadrotor/state_{}.png'.format(
+    plt.savefig('../results/linear/quadrotor/state_{}.png'.format(
         'no_attack' if not attack else 'attack'))
     plt.show()
 
@@ -188,7 +188,7 @@ if __name__ == "__main__":
     plt.xlabel("Time")
     plt.ylabel("Value")
     plt.grid()
-    plt.savefig('/Users/fjl2401/CPSim/src/examples/actuator_delay_attack/results/linear/quadrotor/input_{}.png'.format(
+    plt.savefig('../results/linear/quadrotor/input_{}.png'.format(
         'no_attack' if not attack else 'attack'))
     plt.show()
 
