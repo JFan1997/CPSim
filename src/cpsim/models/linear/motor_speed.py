@@ -108,5 +108,5 @@ if __name__ == "__main__":
     # control signal
     u_arr = [x[0] for x in motor_speed.inputs[:max_index + 1]]
     plt.plot(t_arr, u_arr)
-    plt.savefig('actuator-motor-input.png')
+    # plt.savefig('actuator-motor-input.png')
     plt.show()
